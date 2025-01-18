@@ -1,47 +1,38 @@
-body {
-  background-color: #000000;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
+/* Slideshow container */
+.slideshow-container {
+  width: 100%; /* পুরো স্ক্রীন দখল করবে */
+  overflow: hidden; /* অতিরিক্ত কন্টেন্ট আড়াল করবে */
+  position: relative;
+  height: 150px; /* স্লাইডশো কন্টেইনারের উচ্চতা */
+  background-color: #f9f9f9;
 }
 
-a {
-  color: #1E90FF;
-  text-decoration: none;
-  font-size: 18px;
+/* Slideshow animation */
+.slideshow {
+  display: flex;
+  animation: slide 15s linear infinite; /* স্লাইডিং এনিমেশন */
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul li {
-  margin: 15px 0;
-}
-
-.content {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-}
-
-h1 {
-  font-size: 24px;
-}
-
-.blinking-text {
-  font-size: 20px;
+.slideshow span {
+  padding: 15px 40px;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #FFD700;
-  animation: blink 1.5s infinite;
-  margin-top: 20px;
+  color: #333;
+  white-space: nowrap; /* এক লাইনে রাখা */
 }
 
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+/* Animation keyframes */
+@keyframes slide {
+  0% {
+    transform: translateX(100%); /* শুরুতে বাইরে থেকে ঢুকবে */
+  }
+  33% {
+    transform: translateX(0); /* প্রথম পজিশন */
+  }
+  66% {
+    transform: translateX(-100%); /* স্লাইড হওয়া */
+  }
+  100% {
+    transform: translateX(-200%); /* পরবর্তী স্লাইডের জন্য প্রস্তুতি */
+  }
 }

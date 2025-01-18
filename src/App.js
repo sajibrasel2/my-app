@@ -23,7 +23,6 @@ function Game() {
 function Airdrop() {
   return (
     <div className="content">
-      <h1>Welcome to the Airdrop Page!</h1>
     </div>
   );
 }
