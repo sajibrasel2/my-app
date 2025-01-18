@@ -11,7 +11,6 @@ const Home = () => {
                     <li><a href="#game">Game</a></li>
                     <li><a href="#airdrop">Airdrop</a></li>
                 </ul>
-                <h1>Welcome to the Home Page!</h1>
             </div>
         </div>
     );

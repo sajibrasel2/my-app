@@ -6,7 +6,6 @@ import './App.css'; // CSS ফাইল
 function Home() {
   return (
     <div className="content">
-      <h1>Welcome to the Home Page!</h1>
     </div>
   );
 }
