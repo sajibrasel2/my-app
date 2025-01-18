@@ -1,19 +1,20 @@
+require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 
-// আপনার টোকেন এখানে বসান
-const token = '8050384465:AAFwJ5So3us8DUC7JNobPLc-dZ14-brmK94';
+// বটের টোকেন (আপনার টোকেন দিন)
+const token = '8050384465:AAERYVEZrnBjqwi0M0CCq7M8y105kPyygR8';
 
+// নতুন বট তৈরি
 const bot = new TelegramBot(token, { polling: true });
 
-// Start কমান্ড
+// '/start' কমান্ডের জন্য ইভেন্ট
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, "💡 Powered by Dogs\n\n_(Wait 3 seconds...)_", {
-        parse_mode: "Markdown",
-    });
+    // প্রথম বার্তা: "Powered by Dogs"
+    bot.sendMessage(chatId, "💡 Powered by Dogs");
 
-    // 3 সেকেন্ড পর Continue বাটন দেখানো
+    // ৩ সেকেন্ড অপেক্ষা করার পরে দ্বিতীয় বার্তা পাঠানো
     setTimeout(() => {
         bot.sendMessage(chatId, "Welcome to Profit Chain! Click 'Continue' to enter.", {
             reply_markup: {
@@ -21,16 +22,13 @@ bot.onText(/\/start/, (msg) => {
                     [
                         { 
                             text: "Continue", 
-                            web_app: { url: "https://my-app-psi-three-50.vercel.app/" }  // Web App Integration
+                            web_app: { url: "https://profit-chain.vercel.app/" } 
                         }
                     ]
-                ],
-            },
+                ]
+            }
         });
     }, 3000);
 });
 
-// Error চেক করা
-bot.on("polling_error", (error) => {
-    console.log(`Polling error: ${error.code} - ${error.message}`);
-});
+console.log("Bot is running...");
