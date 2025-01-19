@@ -1,0 +1,46 @@
+import axios from "axios";
+
+const BOT_TOKEN = "8050384465:AAERYVEZrnBjqwi0M0CCq7M8y105kPyygR8";
+const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    const update = req.body;
+
+    // Check if it's an inline query
+    if (update.inline_query) {
+      const queryId = update.inline_query.id;
+      const queryText = update.inline_query.query;
+
+      // Create inline query results
+      const results = [
+        {
+          type: "article",
+          id: "1",
+          title: "Example Result",
+          input_message_content: {
+            message_text: `You searched for: ${queryText}`,
+          },
+        },
+        {
+          type: "article",
+          id: "2",
+          title: "Another Example",
+          input_message_content: {
+            message_text: "This is another example response.",
+          },
+        },
+      ];
+
+      // Send response to Telegram
+      await axios.post(`${TELEGRAM_API}/answerInlineQuery`, {
+        inline_query_id: queryId,
+        results: results,
+      });
+    }
+
+    res.status(200).send("OK");
+  } else {
+    res.status(405).send("Method Not Allowed");
+  }
+}
