@@ -1,8 +1,8 @@
-body, html {
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
 }
 
 .app {
@@ -11,65 +11,153 @@ body, html {
   height: 100vh;
 }
 
-.content {
-  flex: 1; /* কন্টেন্ট এরিয়া */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.animated-text {
-  font-size: 24px;
-  font-weight: bold;
-  color: #f39c12;
-  animation: slide-in 2s ease-out, blink 1.5s step-start infinite;
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(-100%); /* বাম থেকে আসবে */
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0); /* নিজের জায়গায় থাকবে */
-    opacity: 1;
-  }
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0; /* কিছু সময়ের জন্য অদৃশ্য হবে */
-  }
-}
-
+/* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-around; /* অপশনগুলি সমানভাবে জায়গা নেবে */
-  align-items: center;
-  position: fixed; /* স্ক্রিনের নিচে স্থির থাকবে */
+  justify-content: space-around;
+  background-color: #007bff;
+  padding: 10px 0;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #222;
-  padding: 10px 0;
-  z-index: 1000;
 }
 
 .nav-link {
   text-decoration: none;
   color: white;
+  text-align: center;
   font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: #f39c12; /* হোভার করলে রঙ পরিবর্তন */
 }
 
 .icon {
   font-size: 20px;
-  margin-bottom: 5px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 24px;
+  margin: 20px 0;
+  color: #333;
+}
+
+.earn-section,
+.airdrop-section {
+  padding: 20px;
+}
+
+/* Questions Section */
+.questions-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.question-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  width: 100%; /* মোবাইলে পুরো প্রস্থ */
+  max-width: 300px; /* ডেস্কটপে সীমাবদ্ধ */
+  text-align: center;
+}
+
+.question-text {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.options-container {
+  display: flex;
+  flex-wrap: wrap; /* মোবাইলে ভালো ফিট করতে */
+  justify-content: center;
+  gap: 10px;
+}
+
+.option-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
+  width: 100%; /* মোবাইলে পুরো প্রস্থ */
+  max-width: 130px; /* ডেস্কটপে সীমাবদ্ধ */
+}
+
+.option-button:hover {
+  background-color: #ddd;
+}
+
+.option-button.correct {
+  background-color: #4caf50;
+  color: white;
+}
+
+.option-button.incorrect {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Airdrop Section */
+.balance-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+.balance-text {
+  font-size: 32px;
+  color: #007bff;
+  margin: 0;
+}
+
+.balance-description {
+  margin: 10px 0 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .question-card {
+    width: 90%; /* মোবাইলে কার্ডের প্রস্থ ছোট */
+    margin: 0 auto;
+  }
+
+  .option-button {
+    font-size: 14px; /* বাটনের টেক্সট ছোট */
+    padding: 8px 16px;
+  }
+
+  .balance-text {
+    font-size: 28px;
+  }
+
+  .balance-description {
+    font-size: 14px;
+  }
 }
