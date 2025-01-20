@@ -7,7 +7,7 @@ import './App.css'; // CSS ফাইল
 function Home() {
   return (
     <div className="content">
-      <h1>Welcome to Home Page</h1>
+      <h1 className="animated-text">Earn Rewards Easily by Exploring Our Features!</h1> {/* অ্যানিমেটেড বার্তা */}
     </div>
   );
 }
@@ -39,31 +39,14 @@ function Airdrop() {
   );
 }
 
-// PoweredByDogs কম্পোনেন্ট
-function PoweredByDogs() {
-  return (
-    <div className="powered-by-dogs">
-      <h1>Powered By Dogs</h1>
-    </div>
-  );
-}
-
 // মূল অ্যাপ কম্পোনেন্ট
 function App() {
   return (
     <Router>
-      <div>
+      <div className="app">
         {/* রাউটস সেটআপ */}
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <PoweredByDogs /> {/* PoweredByDogs কম্পোনেন্ট প্রথমে */}
-                <Home /> {/* Home পেজ */}
-              </>
-            }
-          />
+          <Route path="/" element={<Home />} /> {/* Home পেজ */}
           <Route path="/earn" element={<Earn />} /> {/* Earn পেজ */}
           <Route path="/game" element={<Game />} /> {/* Game পেজ */}
           <Route path="/airdrop" element={<Airdrop />} /> {/* Airdrop পেজ */}
@@ -72,16 +55,20 @@ function App() {
         {/* ন্যাভিগেশন বার */}
         <nav className="navbar">
           <Link to="/" className="nav-link">
-            <FaHome className="icon" /> Home
+            <FaHome className="icon" />
+            <span>Home</span>
           </Link> {/* Home লিঙ্ক */}
           <Link to="/earn" className="nav-link">
-            <FaCoins className="icon" /> Earn
+            <FaCoins className="icon" />
+            <span>Earn</span>
           </Link> {/* Earn লিঙ্ক */}
           <Link to="/game" className="nav-link">
-            <FaGamepad className="icon" /> Game
+            <FaGamepad className="icon" />
+            <span>Game</span>
           </Link> {/* Game লিঙ্ক */}
           <Link to="/airdrop" className="nav-link">
-            <FaGift className="icon" /> Airdrop
+            <FaGift className="icon" />
+            <span>Airdrop</span>
           </Link> {/* Airdrop লিঙ্ক */}
         </nav>
       </div>

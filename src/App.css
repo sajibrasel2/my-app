@@ -1,22 +1,75 @@
-.navbar {
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content {
+  flex: 1; /* কন্টেন্ট এরিয়া */
   display: flex;
   justify-content: center;
-  background-color: #333;
-  padding: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+.animated-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f39c12;
+  animation: slide-in 2s ease-out, blink 1.5s step-start infinite;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%); /* বাম থেকে আসবে */
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0); /* নিজের জায়গায় থাকবে */
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0; /* কিছু সময়ের জন্য অদৃশ্য হবে */
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around; /* অপশনগুলি সমানভাবে জায়গা নেবে */
+  align-items: center;
+  position: fixed; /* স্ক্রিনের নিচে স্থির থাকবে */
+  bottom: 0;
+  width: 100%;
+  background-color: #222;
+  padding: 10px 0;
+  z-index: 1000;
 }
 
 .nav-link {
-  color: white;
-  margin: 0 15px;
   text-decoration: none;
+  color: white;
+  font-size: 14px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #f39c12;
+  color: #f39c12; /* হোভার করলে রঙ পরিবর্তন */
 }
 
 .icon {
-  margin-right: 5px;
+  font-size: 20px;
+  margin-bottom: 5px;
 }
