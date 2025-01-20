@@ -1,27 +1,42 @@
+/* General Reset */
 body, html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
+/* App Container */
 .app {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
+/* Content Styling */
 .content {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 20px;
+  background: #f9f9f9;
 }
 
-.animated-text {
+.section-title {
   font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Animated Header Text */
+.animated-text {
+  font-size: 28px;
   font-weight: bold;
   color: #f39c12;
   animation: slide-in 2s ease-out, blink 1.5s step-start infinite;
@@ -44,6 +59,7 @@ body, html {
   }
 }
 
+/* Navbar Styling */
 .navbar {
   display: flex;
   justify-content: space-around;
@@ -75,26 +91,27 @@ body, html {
   margin-bottom: 5px;
 }
 
+/* Task/Earn Section Styling */
 .questions-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .question-card {
   background: white;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 300px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 .question-text {
   font-size: 18px;
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .options-container {
@@ -127,13 +144,39 @@ body, html {
   color: white;
 }
 
-.balance-card {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  margin-top: 20px;
+/* Tic Tac Toe Styling */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 5px;
 }
 
-/* নিশ্চিত করুন প্রতিটি CSS প্রোপার্টি শেষে ; আছে */
+.cell {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  font-weight: bold;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cell.player-x {
+  color: #4caf50; /* Green for X */
+}
+
+.cell.player-o {
+  color: #f44336; /* Red for O */
+}
+
+.cell:hover {
+  background-color: #f0f0f0;
+}
+
+.cell:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
