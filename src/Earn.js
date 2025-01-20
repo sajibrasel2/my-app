@@ -18,18 +18,35 @@ const Earn = ({ updateBalance, addHistory }) => {
     { id: 10, text: "How many days in a week?", options: ["5", "7"], correct: "7" },
   ];
 
-  const [aiTasks, setAiTasks] = useState([]);
-  const [userAnswers, setUserAnswers] = useState({});
-  const [lastUpdateTime, setLastUpdateTime] = useState(null);
+  const [aiTasks, setAiTasks] = useState(() => {
+    const storedTasks = localStorage.getItem("aiTasks");
+    return storedTasks ? JSON.parse(storedTasks) : [];
+  });
+
+  const [userAnswers, setUserAnswers] = useState(() => {
+    const storedAnswers = localStorage.getItem("userAnswers");
+    return storedAnswers ? JSON.parse(storedAnswers) : {};
+  });
+
+  const [lastUpdateTime, setLastUpdateTime] = useState(() => {
+    const storedTime = localStorage.getItem("lastUpdateTime");
+    return storedTime ? JSON.parse(storedTime) : null;
+  });
 
   useEffect(() => {
     const now = new Date().getTime();
     const sixHours = 6 * 60 * 60 * 1000;
 
     if (!lastUpdateTime || now - lastUpdateTime >= sixHours) {
-      setAiTasks(shuffleArray(aiTasksData));
+      const newTasks = shuffleArray(aiTasksData);
+      setAiTasks(newTasks);
       setUserAnswers({});
       setLastUpdateTime(now);
+
+      // Save to Local Storage
+      localStorage.setItem("aiTasks", JSON.stringify(newTasks));
+      localStorage.setItem("userAnswers", JSON.stringify({}));
+      localStorage.setItem("lastUpdateTime", JSON.stringify(now));
     }
   }, [lastUpdateTime]);
 
@@ -39,13 +56,20 @@ const Earn = ({ updateBalance, addHistory }) => {
 
   const handleAnswer = (id, selectedOption) => {
     if (userAnswers[id]) return; // Prevent answering more than once
-    setUserAnswers({ ...userAnswers, [id]: selectedOption });
+    const updatedAnswers = { ...userAnswers, [id]: selectedOption };
+    setUserAnswers(updatedAnswers);
 
     const question = aiTasks.find((task) => task.id === id);
+    const currentTime = new Date().toLocaleString(); // Add current date and time
     if (selectedOption === question.correct) {
       updateBalance(5); // Add 5 points
-      addHistory(`Earned 5 points from Task ${id}`);
+      addHistory(`Earned 5 points from Task ${id} (${currentTime})`);
+    } else {
+      addHistory(`Incorrect answer for Task ${id} (${currentTime})`);
     }
+
+    // Save to Local Storage
+    localStorage.setItem("userAnswers", JSON.stringify(updatedAnswers));
   };
 
   return (

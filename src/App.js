@@ -27,7 +27,7 @@ function Airdrop({ balance, history }) {
           <ul>
             {history.map((entry, index) => (
               <li key={index}>{entry}</li>
-            ))}
+            ))} {/* Show each history entry */}
           </ul>
         ) : (
           <p>No history yet.</p>
@@ -38,35 +38,43 @@ function Airdrop({ balance, history }) {
 }
 
 function App() {
-  const [airdropBalance, setAirdropBalance] = useState(0);
-  const [history, setHistory] = useState([]);
+  const [airdropBalance, setAirdropBalance] = useState(0); // Tracks the Airdrop points balance
+  const [history, setHistory] = useState([]); // Tracks the history of actions
 
+  // Function to update the Airdrop balance
   const updateAirdropBalance = (points) => {
     setAirdropBalance((prev) => prev + points);
   };
 
+  // Function to add entries to history
   const addHistory = (entry) => {
-    setHistory((prev) => [...prev, entry]);
+    const currentTime = new Date().toLocaleString(); // Add current date and time to the history entry
+    setHistory((prev) => [...prev, `${entry} (${currentTime})`]);
   };
 
   return (
     <Router>
       <div className="app">
         <Routes>
+          {/* Home Route */}
           <Route path="/" element={<Home />} />
+          {/* Earn Route */}
           <Route
             path="/earn"
             element={<Earn updateBalance={updateAirdropBalance} addHistory={addHistory} />}
           />
+          {/* Game Route */}
           <Route
             path="/game"
-            element={<TicTacToe updateBalance={updateAirdropBalance} />}
+            element={<TicTacToe updateBalance={updateAirdropBalance} addHistory={addHistory} />}
           />
+          {/* Airdrop Route */}
           <Route
             path="/airdrop"
             element={<Airdrop balance={airdropBalance} history={history} />}
           />
         </Routes>
+        {/* Navbar for Navigation */}
         <nav className="navbar">
           <Link to="/" className="nav-link">
             <FaHome className="icon" />
