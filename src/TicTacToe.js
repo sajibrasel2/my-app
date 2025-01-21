@@ -19,7 +19,13 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
 
   // Start a new game
   const startGame = () => {
-    if (gameCount >= 5) return;
+    if (gameCount >= 5 && !isCooldownActive()) {
+      const now = new Date().getTime();
+      const cooldown = 2 * 60 * 60 * 1000; // ২ ঘণ্টার কুলডাউন
+      setCooldownEndTime(now + cooldown);
+      setIsGameActive(false);
+      return;
+    }
     setIsGameActive(true);
     setBoard(Array(9).fill(null));
     setWinner(null);
@@ -48,7 +54,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
         const now = new Date().getTime();
         if (now >= cooldownEndTime) {
           setCooldownEndTime(null);
-          setGameCount(0);
+          setGameCount(0);  // Reset game count after cooldown ends
           clearInterval(interval);
         } else {
           const timeRemaining = cooldownEndTime - now;
