@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
+import './TicTacToe.css'; // Ensure this import matches your CSS file location
 
 const TicTacToe = ({ updateBalance, addHistory }) => {
   const [board, setBoard] = useLocalStorage("board", Array(9).fill(null));
   const [gameCount, setGameCount] = useLocalStorage("gameCount", 0);
-  const [cooldownEndTime, setCooldownEndTime] = useLocalStorage("cooldownEndTime", null);
+  const [cooldownEndTime, setCooldownEndTime] = useLocalStorage(
+    "cooldownEndTime",
+    null
+  );
   const [timeLeft, setTimeLeft] = useState(60);
   const [isGameActive, setIsGameActive] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -21,11 +25,18 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   const startGame = () => {
     if (gameCount >= 5 && !isCooldownActive()) {
       const now = new Date().getTime();
-      const cooldown = 2 * 60 * 60 * 1000; // ২ ঘণ্টার কুলডাউন
+      const cooldown = 2 * 60 * 60 * 1000; // 2 hours cooldown
       setCooldownEndTime(now + cooldown);
       setIsGameActive(false);
+      console.log("Cooldown started:", new Date(now + cooldown).toString());
       return;
     }
+
+    if (isCooldownActive()) {
+      console.log("Cooldown is active, cannot start the game.");
+      return;
+    }
+
     setIsGameActive(true);
     setBoard(Array(9).fill(null));
     setWinner(null);
@@ -36,7 +47,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   const resetGame = useCallback(() => {
     if (gameCount >= 5) {
       const now = new Date().getTime();
-      const cooldown = 2 * 60 * 60 * 1000; // ২ ঘণ্টার কুলডাউন
+      const cooldown = 2 * 60 * 60 * 1000; // 2 hours cooldown
       setCooldownEndTime(now + cooldown);
       setIsGameActive(false);
       return;
@@ -54,7 +65,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
         const now = new Date().getTime();
         if (now >= cooldownEndTime) {
           setCooldownEndTime(null);
-          setGameCount(0);  // Reset game count after cooldown ends
+          setGameCount(0); // Reset game count after cooldown ends
           clearInterval(interval);
         } else {
           const timeRemaining = cooldownEndTime - now;
@@ -152,50 +163,32 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   return (
     <div className="content">
       <h1 className="section-title">Tic Tac Toe</h1>
-      <p style={{ fontSize: "18px", color: "green" }}>
+      <p className="instructions">
         Win a game to earn <b>10 points!</b>
       </p>
-      <p style={{ fontSize: "16px", marginBottom: "20px" }}>
+      <p className="game-count">
         Games Played: {gameCount}/5
       </p>
 
       {!isCooldownActive() ? (
         <>
           {!isGameActive && gameCount < 5 && (
-            <button
-              className="start-button"
-              onClick={startGame}
-              style={{
-                padding: "10px 20px",
-                fontSize: "18px",
-                backgroundColor: "#4caf50",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
+            <button className="start-button" onClick={startGame}>
               Start Game
             </button>
           )}
 
           {isGameActive && (
             <div>
-              <p style={{ fontSize: "16px", marginBottom: "10px" }}>
+              <p className="timer">
                 Time Left: {timeLeft}s
               </p>
-              <div className="board" style={{ display: "grid", gridTemplateColumns: "repeat(3, 100px)", gap: "5px" }}>
+              <div className="board">
                 {board.map((cell, index) => (
                   <button
                     key={index}
                     className={`cell ${cell === "X" ? "player-x" : "player-o"}`}
                     onClick={() => handleClick(index)}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      fontSize: "24px",
-                      fontWeight: "bold",
-                    }}
                     disabled={!!cell || winner}
                   >
                     {cell}
@@ -203,7 +196,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
                 ))}
               </div>
               {winner && (
-                <p style={{ fontSize: "16px", marginTop: "10px" }}>
+                <p className="winner">
                   {winner === "Draw" ? "It's a Draw!" : `Winner: ${winner}`}
                 </p>
               )}
@@ -211,7 +204,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
           )}
         </>
       ) : (
-        <p style={{ fontSize: "16px", marginTop: "20px", color: "gray" }}>
+        <p className="cooldown-message">
           ⏳ Cooldown Active: Wait for{" "}
           {Math.floor(cooldownTimeLeft / (1000 * 60 * 60))}h{" "}
           {Math.floor((cooldownTimeLeft % (1000 * 60 * 60)) / (1000 * 60))}m{" "}

@@ -1,89 +1,155 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f3f4f6;
+  color: #333;
+  line-height: 1.6;
+}
+
 /* Game Section */
 .content {
-    text-align: center;
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 600px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Section Title */
-  .section-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  /* Instructions */
-  .content p {
-    font-size: 1.2rem;
-    color: #666;
-    margin: 5px 0;
-  }
-  
-  /* Board Styling */
-  .board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 20px auto;
-    max-width: 300px;
-  }
-  
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 600px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Instructions and Cooldown Message */
+.instructions, .game-count, .timer, .cooldown-message {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 10px 0;
+}
+
+.cooldown-message {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Board Styling */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 320px;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.cell.player-x {
+  color: #4caf50;
+}
+
+.cell.player-o {
+  color: #f44336;
+}
+
+.cell:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+  background-color: #f9f9f9;
+  color: #bbb;
+}
+
+/* Start Button */
+.start-button {
+  padding: 10px 25px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.start-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.start-button:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .cell {
     width: 80px;
     height: 80px;
-    background-color: #fff;
-    border: 2px solid #ddd;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #4caf50;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
+    font-size: 1.5rem;
   }
-  
-  .cell.player-x {
-    color: #4caf50;
+
+  .board {
+    gap: 8px;
   }
-  
-  .cell.player-o {
-    color: #f44336;
-  }
-  
-  .cell:hover {
-    background-color: #f0f0f0;
-  }
-  
-  /* Start Button */
+
   .start-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 16px;
+    padding: 8px 20px;
   }
-  
-  .start-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+
+  .section-title {
+    font-size: 1.8rem;
   }
-  
-  .start-button:hover {
-    background-color: #45a049;
+
+  .instructions, .game-count, .timer, .cooldown-message {
+    font-size: 1rem;
   }
-  
-  /* Cooldown Message */
-  .cooldown-message {
-    font-size: 1.2rem;
-    color: #ff5722;
-    margin-top: 20px;
-    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  .cell {
+    width: 70px;
+    height: 70px;
+    font-size: 1.3rem;
   }
-  
+
+  .start-button {
+    font-size: 14px;
+    padding: 7px 15px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .instructions, .game-count, .timer, .cooldown-message {
+    font-size: 0.9rem;
+  }
+}

@@ -2,21 +2,21 @@
   padding: 20px;
   text-align: center;
   padding-bottom: 80px; /* Space for navigation bar */
-  background-color: #f9f9f9; /* Light background for better contrast */
+  background-color: #f9f9f9;
 }
 
 .earn-title {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #2c3e50; /* Darker text for readability */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Slight shadow for emphasis */
+  color: #2c3e50;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.timer {
+.refresh-timer {
   font-size: 18px;
+  color: #8e44ad;
   font-weight: bold;
-  color: #8e44ad; /* Purple color for timer */
   margin-bottom: 20px;
 }
 
@@ -43,15 +43,11 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-.static-task {
-  background: #ecf0f1; /* Light gray for static tasks */
-}
-
-.ai-task .task-question {
+.task-question {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #34495e; /* Darker text for better visibility */
+  color: #34495e;
 }
 
 .task-options {
@@ -68,30 +64,37 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #ecf0f1; /* Light background for options */
+  background-color: #ecf0f1;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  color: #2c3e50; /* Dark text for better visibility */
+  color: #2c3e50;
 }
 
 .option-button:hover {
-  background-color: #bdc3c7; /* Slightly darker on hover */
-  transform: scale(1.05); /* Slight scale on hover */
+  background-color: #bdc3c7;
+  transform: scale(1.05);
 }
 
 .option-button.correct {
-  background-color: #27ae60; /* Green for correct answers */
+  background-color: #27ae60;
   color: white;
 }
 
 .option-button.incorrect {
-  background-color: #e74c3c; /* Red for incorrect answers */
+  background-color: #e74c3c;
   color: white;
 }
 
-.task-card.correct {
-  border: 2px solid #27ae60;
-}
-
-.task-card.incorrect {
-  border: 2px solid #e74c3c;
+.congrats-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #27ae60;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1000;
 }
