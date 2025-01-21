@@ -11,21 +11,18 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   const [cooldownTimeLeft, setCooldownTimeLeft] = useState(0);
   const [congratsMessage, setCongratsMessage] = useState("");
 
-  // Format time for display
   const formatTime = (ms) => {
     const minutes = Math.floor(ms / 60);
     const seconds = ms % 60;
     return `${minutes}m ${seconds}s`;
   };
 
-  // Check if cooldown is active
   const isCooldownActive = useCallback(() => {
     if (!cooldownEndTime) return false;
     const now = new Date().getTime();
     return now < cooldownEndTime;
   }, [cooldownEndTime]);
 
-  // Start a new game
   const startGame = () => {
     if (isCooldownActive()) return;
     if (gameCount >= 5) {
@@ -42,7 +39,6 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     setGameTimeLeft(60);
   };
 
-  // Reset game after win/loss/draw
   const resetGame = useCallback(() => {
     if (gameCount >= 5) {
       const now = new Date().getTime();
@@ -60,7 +56,6 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     setIsGameActive(false);
   }, [gameCount]);
 
-  // Handle game timer
   useEffect(() => {
     if (!isGameActive) return;
 
@@ -68,7 +63,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
       setGameTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          resetGame(); // Reset game after timer finishes
+          resetGame();
           return 0;
         }
         return prev - 1;
@@ -78,7 +73,6 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     return () => clearInterval(interval);
   }, [isGameActive, resetGame]);
 
-  // Handle cooldown timer
   useEffect(() => {
     if (isCooldownActive()) {
       const interval = setInterval(() => {
@@ -97,7 +91,6 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     }
   }, [cooldownEndTime, isCooldownActive]);
 
-  // Handle user click on board
   const handleClick = (index) => {
     if (!isGameActive || board[index] || winner) return;
 
@@ -122,7 +115,6 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     }
   };
 
-  // AI move logic
   const aiMove = (board) => {
     let move;
     for (let i = 0; i < board.length; i++) {
@@ -142,7 +134,6 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     }
   };
 
-  // Check for winner or draw
   const checkWinner = (board) => {
     const winningCombinations = [
       [0, 1, 2],
