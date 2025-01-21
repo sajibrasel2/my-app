@@ -5,10 +5,14 @@ const Airdrop = ({ balance, history }) => {
   return (
     <div className="airdrop-content">
       <h1 className="section-title">Airdrop Rewards</h1>
+
+      {/* Balance Section */}
       <div className="balance-section">
         <h2 className="balance-amount">{balance} Points</h2>
         <p className="balance-text">Your total rewards balance.</p>
       </div>
+
+      {/* History Section */}
       <div className="history-section">
         <h2 className="history-title">History</h2>
         {history.length > 0 ? (
@@ -17,7 +21,9 @@ const Airdrop = ({ balance, history }) => {
               <li
                 key={index}
                 className={`history-item ${
-                  entry.includes("Earned") ? "earn-history" : "game-history"
+                  entry.toLowerCase().includes("earn")
+                    ? "earn-history"
+                    : "game-history"
                 }`}
               >
                 {entry}
