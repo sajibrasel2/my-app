@@ -1,16 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Earn.css";
 
 const Earn = ({ updateBalance, addHistory }) => {
+  // Static tasks (first 5 fixed questions)
   const staticTasks = [
-    { id: 1, title: "Task 1: Coming Soon" },
-    { id: 2, title: "Task 2: Coming Soon" },
-    { id: 3, title: "Task 3: Coming Soon" },
-    { id: 4, title: "Task 4: Coming Soon" },
-    { id: 5, title: "Task 5: Coming Soon" },
+    {
+      id: 1,
+      question: "What is the capital of France?",
+      options: ["Paris", "London", "Berlin", "Madrid"],
+      correct_answer: "Paris"
+    },
+    {
+      id: 2,
+      question: "What is the chemical symbol for water?",
+      options: ["H2O", "CO2", "O2", "NaCl"],
+      correct_answer: "H2O"
+    },
+    {
+      id: 3,
+      question: "Which planet is known as the Red Planet?",
+      options: ["Earth", "Mars", "Jupiter", "Saturn"],
+      correct_answer: "Mars"
+    },
+    {
+      id: 4,
+      question: "What is the largest mammal?",
+      options: ["Elephant", "Blue Whale", "Giraffe", "Shark"],
+      correct_answer: "Blue Whale"
+    },
+    {
+      id: 5,
+      question: "What is the square root of 64?",
+      options: ["6", "7", "8", "9"],
+      correct_answer: "8"
+    },
   ];
 
-  const [aiTasks, setAiTasks] = useState([]);
+  // States for questions, answers, and timing
+  const [quizData, setQuizData] = useState([]);
   const [userAnswers, setUserAnswers] = useState(() => {
     const storedAnswers = localStorage.getItem("userAnswers");
     return storedAnswers ? JSON.parse(storedAnswers) : {};
@@ -19,19 +46,17 @@ const Earn = ({ updateBalance, addHistory }) => {
   const [refreshTimeLeft, setRefreshTimeLeft] = useState(() => {
     const storedTime = localStorage.getItem("refreshEndTime");
     const now = new Date().getTime();
-    return storedTime ? Math.max(storedTime - now, 0) : 6 * 60 * 60 * 1000; // ৬ ঘণ্টা
+    return storedTime ? Math.max(storedTime - now, 0) : 6 * 60 * 60 * 1000; // 6 hours
   });
 
   useEffect(() => {
-    if (refreshTimeLeft === 6 * 60 * 60 * 1000 || aiTasks.length === 0) {
-      fetchNewTasks(); // নতুন প্রশ্ন ফেচ
-    }
+    fetchQuizQuestions(); // Fetch quiz questions on initial load
 
     const interval = setInterval(() => {
       setRefreshTimeLeft((prev) => {
         if (prev <= 1000) {
-          fetchNewTasks(); // নতুন প্রশ্ন ফেচ
-          return 6 * 60 * 60 * 1000; // রিফ্রেশ টাইম রিসেট
+          fetchQuizQuestions(); // Fetch new tasks after refresh time reaches zero
+          return 6 * 60 * 60 * 1000; // Reset refresh time
         }
         return prev - 1000;
       });
@@ -41,55 +66,62 @@ const Earn = ({ updateBalance, addHistory }) => {
   }, [refreshTimeLeft]);
 
   useEffect(() => {
-    // LocalStorage-এ ডেটা সেভ
+    // Save data to localStorage
     localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
     localStorage.setItem("refreshEndTime", new Date().getTime() + refreshTimeLeft);
   }, [userAnswers, refreshTimeLeft]);
 
-  const fetchNewTasks = async () => {
-    const apiUrl = "https://quizapi.io/api/v1/questions"; 
-    const apiKey = "IbF1UGHVbpxhSQjsFwZUtNLDzDV5122aNRjA7iLg";  // আপনার নতুন API Key এখানে দিন
+  // Function to fetch new quiz questions
+  const fetchQuizQuestions = async () => {
+    const apiUrl = "https://opentdb.com/api.php?amount=5&type=multiple"; // Open Trivia Database API URL
+
+    const retryDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     try {
-      const response = await fetch(`${apiUrl}?apiKey=${apiKey}&category=Science&difficulty=easy&limit=5`);
+      const response = await fetch(apiUrl);
 
-      // রেসপন্স চেক করুন
+      if (response.status === 429) {
+        console.error("Rate limit exceeded. Retrying after 1 minute...");
+        await retryDelay(60000); // Retry after 1 minute
+        return fetchQuizQuestions(); // Retry the request
+      }
+
       if (!response.ok) {
-        console.error("Failed to fetch data, status:", response.status);
-        return;  // রেসপন্স যদি সফল না হয়, তাহলে কিছু না করুন
+        console.error("Failed to fetch quiz data:", response.status);
+        return;
       }
 
       const data = await response.json();
-      console.log("Fetched data:", data); // API থেকে আসা ডেটা দেখুন
 
-      // ডেটার কাঠামো চেক করুন
-      if (data && Array.isArray(data)) {
-        setAiTasks(data); // যদি ডেটা অ্যারে হয়, তাহলে সেট করুন
+      if (data.response_code === 0) {
+        setQuizData(data.results); // Set quiz data from API response
       } else {
-        console.log("Data is not an array or not available:", data); // ডেটা অ্যারে না হলে লগ করুন
-        setAiTasks([]); // যদি ডেটা অ্যারে না হয়, তাহলে ফাঁকা অ্যারে সেট করুন
+        console.error("Failed to fetch valid quiz data:", data);
       }
-      setUserAnswers({}); // আগের উত্তর ক্লিয়ার
     } catch (error) {
-      console.error("Error fetching new tasks:", error);
+      console.error("Error fetching quiz data:", error);
     }
   };
 
-  const handleAnswer = (id, selectedOption) => {
-    if (userAnswers[id]) return;
+  // Function to handle answers
+  const handleAnswer = (selectedOption, questionIndex) => {
+    const question = quizData[questionIndex];
+    const correctAnswer = question.correct_answer;
 
-    const updatedAnswers = { ...userAnswers, [id]: selectedOption };
-    setUserAnswers(updatedAnswers);
-
-    const question = aiTasks.find((task) => task.id === id);
-    if (selectedOption === question.correct_answer) {
-      updateBalance(5);
-      addHistory(`Earned 5 points from Task ${id}`);
+    // Check if answer is correct
+    if (selectedOption === correctAnswer) {
+      updateBalance(10); // Add 10 points for correct answer
+      addHistory(`🎉 Congratulations! You earned 10 points for the correct answer to Task ${questionIndex + 1}.`);
     } else {
-      addHistory(`Incorrect answer for Task ${id}`);
+      addHistory(`❌ Incorrect answer for Task ${questionIndex + 1}`);
     }
+
+    // Save the user answer
+    const updatedAnswers = { ...userAnswers, [questionIndex]: selectedOption };
+    setUserAnswers(updatedAnswers);
   };
 
+  // Format the remaining time
   const formatTime = (ms) => {
     const hours = Math.floor(ms / (1000 * 60 * 60));
     const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
@@ -106,24 +138,20 @@ const Earn = ({ updateBalance, addHistory }) => {
       </p>
 
       <div className="tasks-container">
-        {staticTasks.map((task) => (
-          <div key={task.id} className="task-card static-task">
-            <p>{task.title}</p>
-          </div>
-        ))}
-
-        {aiTasks.length > 0 ? (
-          aiTasks.map((task, index) => (
-            <div key={index} className="task-card ai-task">
-              <p className="task-question">{task.question}</p> {/* প্রশ্ন দেখানো */}
+        {/* Static Questions (Fixed) */}
+        <div className="static-questions">
+          <h2>Fixed Questions</h2>
+          {staticTasks.map((task) => (
+            <div key={task.id} className="task-card static-task">
+              <p className="task-question">{task.question}</p>
               <div className="task-options">
-                {[task.correct_answer, ...task.incorrect_answers].map((option, idx) => (
+                {task.options.map((option, idx) => (
                   <button
                     key={idx}
-                    onClick={() => handleAnswer(task.id, option)}
-                    disabled={!!userAnswers[task.id]}
+                    onClick={() => handleAnswer(option, task.id - 1)} // Use task.id - 1 to get index for static task
+                    disabled={!!userAnswers[task.id - 1]}
                     className={`option-button ${
-                      userAnswers[task.id] === option
+                      userAnswers[task.id - 1] === option
                         ? option === task.correct_answer
                           ? "correct"
                           : "incorrect"
@@ -133,6 +161,35 @@ const Earn = ({ updateBalance, addHistory }) => {
                     {option}
                   </button>
                 ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Dynamic Quiz Questions (from API) */}
+        {quizData.length > 0 ? (
+          quizData.map((task, index) => (
+            <div key={index} className="task-card ai-task">
+              <p className="task-question">{task.question}</p>
+              <div className="task-options">
+                {[...task.incorrect_answers, task.correct_answer]
+                  .sort(() => Math.random() - 0.5)
+                  .map((option, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleAnswer(option, index + 5)} // +5 to differentiate between static and dynamic questions
+                      disabled={!!userAnswers[index + 5]}
+                      className={`option-button ${
+                        userAnswers[index + 5] === option
+                          ? option === task.correct_answer
+                            ? "correct"
+                            : "incorrect"
+                          : ""
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
               </div>
             </div>
           ))
