@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
-import useLocalStorage from "./hooks/useLocalStorage";
 import "./TicTacToe.css";
 
 const TicTacToe = ({ updateBalance, addHistory }) => {
-  const [board, setBoard] = useLocalStorage("board", Array(9).fill(null));
-  const [gameCount, setGameCount] = useLocalStorage("gameCount", 0);
-  const [cooldownEndTime, setCooldownEndTime] = useLocalStorage(
-    "cooldownEndTime",
-    null
-  );
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [gameCount, setGameCount] = useState(0);
+  const [cooldownEndTime, setCooldownEndTime] = useState(null);
   const [isGameActive, setIsGameActive] = useState(false);
   const [winner, setWinner] = useState(null);
-  const [cooldownTimeLeft, setCooldownTimeLeft] = useState(() => {
-    const now = new Date().getTime();
-    return cooldownEndTime ? Math.max(cooldownEndTime - now, 0) : 0;
-  });
+  const [gameTimeLeft, setGameTimeLeft] = useState(60); // 1-minute game timer
+  const [cooldownTimeLeft, setCooldownTimeLeft] = useState(0);
+  const [congratsMessage, setCongratsMessage] = useState("");
+
+  // Format time for display
+  const formatTime = (ms) => {
+    const minutes = Math.floor(ms / 60);
+    const seconds = ms % 60;
+    return `${minutes}m ${seconds}s`;
+  };
 
   // Check if cooldown is active
   const isCooldownActive = useCallback(() => {
@@ -23,62 +25,79 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     return now < cooldownEndTime;
   }, [cooldownEndTime]);
 
-  // Format cooldown time
-  const formatTime = (ms) => {
-    const hours = Math.floor(ms / (1000 * 60 * 60));
-    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-    return `${hours}h ${minutes}m ${seconds}s`;
-  };
-
   // Start a new game
   const startGame = () => {
+    if (isCooldownActive()) return;
     if (gameCount >= 5) {
       const now = new Date().getTime();
-      const cooldown = 2 * 60 * 60 * 1000; // 2 hours cooldown
+      const cooldown = 6 * 60 * 60 * 1000; // 6 hours cooldown
       setCooldownEndTime(now + cooldown);
-      setIsGameActive(false);
+      setCooldownTimeLeft(cooldown / 1000);
       return;
     }
+
     setIsGameActive(true);
     setBoard(Array(9).fill(null));
     setWinner(null);
+    setGameTimeLeft(60);
   };
 
-  // Reset game logic
+  // Reset game after win/loss/draw
   const resetGame = useCallback(() => {
     if (gameCount >= 5) {
       const now = new Date().getTime();
-      const cooldown = 2 * 60 * 60 * 1000; // 2 hours cooldown
+      const cooldown = 6 * 60 * 60 * 1000; // 6 hours cooldown
       setCooldownEndTime(now + cooldown);
+      setCooldownTimeLeft(cooldown / 1000);
       setIsGameActive(false);
       return;
     }
+
     setBoard(Array(9).fill(null));
     setWinner(null);
     setGameCount((prev) => prev + 1);
-  }, [gameCount, setCooldownEndTime, setBoard, setWinner, setGameCount]);
+    setGameTimeLeft(60);
+    setIsGameActive(false);
+  }, [gameCount]);
 
-  // Cooldown timer logic
+  // Handle game timer
+  useEffect(() => {
+    if (!isGameActive) return;
+
+    const interval = setInterval(() => {
+      setGameTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          resetGame(); // Reset game after timer finishes
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isGameActive, resetGame]);
+
+  // Handle cooldown timer
   useEffect(() => {
     if (isCooldownActive()) {
       const interval = setInterval(() => {
         const now = new Date().getTime();
         if (now >= cooldownEndTime) {
           setCooldownEndTime(null);
-          setGameCount(0); // Reset game count after cooldown ends
-          setCooldownTimeLeft(0); // Reset cooldown timer
+          setCooldownTimeLeft(0);
+          setGameCount(0);
           clearInterval(interval);
         } else {
-          setCooldownTimeLeft(cooldownEndTime - now);
+          setCooldownTimeLeft(Math.floor((cooldownEndTime - now) / 1000));
         }
       }, 1000);
 
       return () => clearInterval(interval);
     }
-  }, [cooldownEndTime, isCooldownActive, setCooldownEndTime, setGameCount]);
+  }, [cooldownEndTime, isCooldownActive]);
 
-  // Handle user click
+  // Handle user click on board
   const handleClick = (index) => {
     if (!isGameActive || board[index] || winner) return;
 
@@ -86,15 +105,16 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     newBoard[index] = "X";
     setBoard(newBoard);
 
-    // Game logic and winner check
     const gameWinner = checkWinner(newBoard);
     if (gameWinner) {
       setWinner(gameWinner);
       if (gameWinner === "X") {
-        addHistory(`🎉 You won! +10 points`);
         updateBalance(10);
-      } else if (gameWinner === "Draw") {
-        addHistory(`It's a draw!`);
+        addHistory("🎉 You won! +10 points");
+        setCongratsMessage("🎉 Congratulations! You earned 10 points!");
+        setTimeout(() => setCongratsMessage(""), 3000);
+      } else {
+        addHistory("AI won! Better luck next time.");
       }
       resetGame();
     } else {
@@ -117,12 +137,12 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     const gameWinner = checkWinner(board);
     if (gameWinner) {
       setWinner(gameWinner);
-      addHistory(`AI won!`);
+      addHistory("AI won! Better luck next time.");
       resetGame();
     }
   };
 
-  // Check winner logic
+  // Check for winner or draw
   const checkWinner = (board) => {
     const winningCombinations = [
       [0, 1, 2],
@@ -147,36 +167,38 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   return (
     <div className="content">
       <h1 className="section-title">Tic Tac Toe</h1>
+      <p className="reward-info">Win the game to earn <strong>10 points!</strong></p>
 
-      {!isCooldownActive() ? (
-        <>
-          {!isGameActive && (
-            <button className="start-button" onClick={startGame}>
-              Start Game
-            </button>
-          )}
-          {isGameActive && (
-            <div>
-              <div className="board">
-                {board.map((cell, index) => (
-                  <button
-                    key={index}
-                    className={`cell ${cell === "X" ? "player-x" : "player-o"}`}
-                    onClick={() => handleClick(index)}
-                  >
-                    {cell}
-                  </button>
-                ))}
-              </div>
-              {winner && <p>Winner: {winner}</p>}
-            </div>
-          )}
-        </>
-      ) : (
-        <p className="cooldown-message">
-          ⏳ Cooldown Active: {formatTime(cooldownTimeLeft)}
-        </p>
+      <p className="game-stats">Games Played: {gameCount}/5</p>
+      {cooldownTimeLeft > 0 && (
+        <p className="cooldown-timer">⏳ Cooldown Ends In: {formatTime(cooldownTimeLeft)}</p>
       )}
+
+      {!isCooldownActive() && !isGameActive && (
+        <button className="start-button" onClick={startGame}>
+          Start Game
+        </button>
+      )}
+
+      {isGameActive && (
+        <div>
+          <p className="game-timer">Time Left: {formatTime(gameTimeLeft)}</p>
+          <div className="board">
+            {board.map((cell, index) => (
+              <button
+                key={index}
+                className={`cell ${cell === "X" ? "player-x" : "player-o"}`}
+                onClick={() => handleClick(index)}
+              >
+                {cell}
+              </button>
+            ))}
+          </div>
+          {winner && <p className="winner-message">Winner: {winner}</p>}
+        </div>
+      )}
+
+      {congratsMessage && <div className="congrats-popup">{congratsMessage}</div>}
     </div>
   );
 };
