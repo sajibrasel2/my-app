@@ -1,38 +1,24 @@
-/* Slideshow container */
+/* Remove Slideshow styles */
 .slideshow-container {
-  width: 100%; /* পুরো স্ক্রীন দখল করবে */
-  overflow: hidden; /* অতিরিক্ত কন্টেন্ট আড়াল করবে */
-  position: relative;
-  height: 150px; /* স্লাইডশো কন্টেইনারের উচ্চতা */
-  background-color: #f9f9f9;
+  display: none;
 }
 
-/* Slideshow animation */
 .slideshow {
-  display: flex;
-  animation: slide 15s linear infinite; /* স্লাইডিং এনিমেশন */
+  display: none;
 }
 
 .slideshow span {
-  padding: 15px 40px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  white-space: nowrap; /* এক লাইনে রাখা */
+  display: none;
 }
 
-/* Animation keyframes */
 @keyframes slide {
-  0% {
-    transform: translateX(100%); /* শুরুতে বাইরে থেকে ঢুকবে */
-  }
-  33% {
-    transform: translateX(0); /* প্রথম পজিশন */
-  }
-  66% {
-    transform: translateX(-100%); /* স্লাইড হওয়া */
-  }
-  100% {
-    transform: translateX(-200%); /* পরবর্তী স্লাইডের জন্য প্রস্তুতি */
-  }
+  display: none;
+}
+
+/* Retain other styles for Home page */
+.animated-text {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
 }

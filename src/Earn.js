@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Earn.css";
 
 const Earn = ({ updateBalance, addHistory }) => {
@@ -10,81 +10,92 @@ const Earn = ({ updateBalance, addHistory }) => {
     { id: 5, title: "Task 5: Coming Soon" },
   ];
 
-  const aiTasksData = [
-    { id: 6, text: "What is 2 + 2?", options: ["3", "4"], correct: "4" },
-    { id: 7, text: "What is the capital of France?", options: ["Paris", "London"], correct: "Paris" },
-    { id: 8, text: "What is 5 x 3?", options: ["15", "10"], correct: "15" },
-    { id: 9, text: "What is the color of the sky?", options: ["Blue", "Green"], correct: "Blue" },
-    { id: 10, text: "How many days in a week?", options: ["5", "7"], correct: "7" },
-  ];
-
-  const [aiTasks, setAiTasks] = useState(() => {
-    const storedTasks = localStorage.getItem("aiTasks");
-    return storedTasks ? JSON.parse(storedTasks) : [];
-  });
-
+  const [aiTasks, setAiTasks] = useState([]);
   const [userAnswers, setUserAnswers] = useState(() => {
     const storedAnswers = localStorage.getItem("userAnswers");
     return storedAnswers ? JSON.parse(storedAnswers) : {};
   });
 
-  const [lastUpdateTime, setLastUpdateTime] = useState(() => {
-    const storedTime = localStorage.getItem("lastUpdateTime");
-    return storedTime ? JSON.parse(storedTime) : null;
+  const [refreshTimeLeft, setRefreshTimeLeft] = useState(() => {
+    const storedTime = localStorage.getItem("refreshEndTime");
+    const now = new Date().getTime();
+    return storedTime ? Math.max(storedTime - now, 0) : 6 * 60 * 60 * 1000; // ৬ ঘণ্টা
   });
 
   useEffect(() => {
-    const now = new Date().getTime();
-    const sixHours = 6 * 60 * 60 * 1000;
-
-    if (!lastUpdateTime || now - lastUpdateTime >= sixHours) {
-      const newTasks = shuffleArray(aiTasksData);
-      setAiTasks(newTasks);
-      setUserAnswers({});
-      setLastUpdateTime(now);
-
-      // Save to Local Storage
-      localStorage.setItem("aiTasks", JSON.stringify(newTasks));
-      localStorage.setItem("userAnswers", JSON.stringify({}));
-      localStorage.setItem("lastUpdateTime", JSON.stringify(now));
+    if (refreshTimeLeft === 6 * 60 * 60 * 1000 || aiTasks.length === 0) {
+      fetchNewTasks(); // নতুন প্রশ্ন ফেচ
     }
-  }, [lastUpdateTime]);
 
-  const shuffleArray = (array) => {
-    return array.sort(() => Math.random() - 0.5);
+    const interval = setInterval(() => {
+      setRefreshTimeLeft((prev) => {
+        if (prev <= 1000) {
+          fetchNewTasks(); // নতুন প্রশ্ন ফেচ
+          return 6 * 60 * 60 * 1000; // রিফ্রেশ টাইম রিসেট
+        }
+        return prev - 1000;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [refreshTimeLeft]);
+
+  useEffect(() => {
+    // LocalStorage-এ ডেটা সেভ
+    localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+    localStorage.setItem("refreshEndTime", new Date().getTime() + refreshTimeLeft);
+  }, [userAnswers, refreshTimeLeft]);
+
+  const fetchNewTasks = async () => {
+    // এখানে আপনার API URL লিখুন
+    const apiUrl = "https://example.com/api/questions"; // পরিবর্তন করুন আপনার API অনুযায়ী
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      setAiTasks(data); // নতুন প্রশ্ন সেট
+      setUserAnswers({}); // আগের উত্তর ক্লিয়ার
+    } catch (error) {
+      console.error("Error fetching new tasks:", error);
+    }
   };
 
   const handleAnswer = (id, selectedOption) => {
-    if (userAnswers[id]) return; // Prevent answering more than once
+    if (userAnswers[id]) return;
+
     const updatedAnswers = { ...userAnswers, [id]: selectedOption };
     setUserAnswers(updatedAnswers);
 
     const question = aiTasks.find((task) => task.id === id);
-    const currentTime = new Date().toLocaleString(); // Add current date and time
     if (selectedOption === question.correct) {
-      updateBalance(5); // Add 5 points
-      addHistory(`Earned 5 points from Task ${id} (${currentTime})`);
+      updateBalance(5);
+      addHistory(`Earned 5 points from Task ${id}`);
     } else {
-      addHistory(`Incorrect answer for Task ${id} (${currentTime})`);
+      addHistory(`Incorrect answer for Task ${id}`);
     }
+  };
 
-    // Save to Local Storage
-    localStorage.setItem("userAnswers", JSON.stringify(updatedAnswers));
+  const formatTime = (ms) => {
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+    return `${hours}h ${minutes}m ${seconds}s`;
   };
 
   return (
     <div className="earn-content">
       <h1 className="earn-title">Earn Rewards by Completing Tasks!</h1>
 
+      <p className="timer">
+        🕒 New tasks in: <strong>{formatTime(refreshTimeLeft)}</strong>
+      </p>
+
       <div className="tasks-container">
-        {/* Static Tasks */}
         {staticTasks.map((task) => (
           <div key={task.id} className="task-card static-task">
             <p>{task.title}</p>
           </div>
         ))}
 
-        {/* AI Tasks */}
         {aiTasks.map((task) => (
           <div key={task.id} className="task-card ai-task">
             <p className="task-question">{task.text}</p>

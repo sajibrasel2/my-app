@@ -1,69 +1,97 @@
 .earn-content {
-    padding: 20px;
-    text-align: center;
-    padding-bottom: 80px; /* Space for navigation bar */
-  }
-  
-  .earn-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .tasks-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .task-card {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  .static-task {
-    background: #f0f0f0;
-  }
-  
-  .ai-task .task-question {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .task-options {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .option-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s ease;
-  }
-  
-  .option-button:hover {
-    background-color: #ddd;
-  }
-  
-  .option-button.correct {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .option-button.incorrect {
-    background-color: #f44336;
-    color: white;
-  }
-  
+  padding: 20px;
+  text-align: center;
+  padding-bottom: 80px; /* Space for navigation bar */
+  background-color: #f9f9f9; /* Light background for better contrast */
+}
+
+.earn-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2c3e50; /* Darker text for readability */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Slight shadow for emphasis */
+}
+
+.timer {
+  font-size: 18px;
+  font-weight: bold;
+  color: #8e44ad; /* Purple color for timer */
+  margin-bottom: 20px;
+}
+
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.task-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.static-task {
+  background: #ecf0f1; /* Light gray for static tasks */
+}
+
+.ai-task .task-question {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #34495e; /* Darker text for better visibility */
+}
+
+.task-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.option-button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ecf0f1; /* Light background for options */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #2c3e50; /* Dark text for better visibility */
+}
+
+.option-button:hover {
+  background-color: #bdc3c7; /* Slightly darker on hover */
+  transform: scale(1.05); /* Slight scale on hover */
+}
+
+.option-button.correct {
+  background-color: #27ae60; /* Green for correct answers */
+  color: white;
+}
+
+.option-button.incorrect {
+  background-color: #e74c3c; /* Red for incorrect answers */
+  color: white;
+}
+
+.task-card.correct {
+  border: 2px solid #27ae60;
+}
+
+.task-card.incorrect {
+  border: 2px solid #e74c3c;
+}

@@ -1,0 +1,89 @@
+/* Game Section */
+.content {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Instructions */
+  .content p {
+    font-size: 1.2rem;
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  /* Board Styling */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 300px;
+  }
+  
+  .cell {
+    width: 80px;
+    height: 80px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4caf50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+  }
+  
+  .cell.player-x {
+    color: #4caf50;
+  }
+  
+  .cell.player-o {
+    color: #f44336;
+  }
+  
+  .cell:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Start Button */
+  .start-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .start-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .start-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Cooldown Message */
+  .cooldown-message {
+    font-size: 1.2rem;
+    color: #ff5722;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
