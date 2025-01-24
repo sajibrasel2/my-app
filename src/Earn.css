@@ -3,6 +3,10 @@
   text-align: center;
   padding-bottom: 80px; /* Space for navigation bar */
   background-color: #f9f9f9;
+  min-height: 100vh; /* Ensure it covers full viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .earn-title {
@@ -22,9 +26,10 @@
 
 .tasks-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+  width: 100%;
 }
 
 .task-card {
@@ -48,6 +53,7 @@
   font-weight: bold;
   margin-bottom: 15px;
   color: #34495e;
+  line-height: 1.4;
 }
 
 .task-options {
@@ -67,6 +73,9 @@
   background-color: #ecf0f1;
   transition: background-color 0.3s ease, transform 0.2s ease;
   color: #2c3e50;
+  flex: 1 1 calc(50% - 20px); /* Responsive options for mobile */
+  max-width: 150px; /* Ensure proper size on larger screens */
+  text-align: center;
 }
 
 .option-button:hover {
@@ -97,4 +106,20 @@
   font-size: 18px;
   font-weight: bold;
   z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .task-card {
+    max-width: 90%;
+  }
+
+  .option-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .earn-title {
+    font-size: 24px;
+  }
 }

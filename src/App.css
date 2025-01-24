@@ -70,6 +70,7 @@ body, html {
   background-color: #222;
   padding: 10px 0;
   z-index: 1000;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .nav-link {
@@ -79,16 +80,21 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .nav-link:hover {
   color: #f39c12;
+  transform: scale(1.1);
 }
 
 .icon {
   font-size: 20px;
   margin-bottom: 5px;
+}
+
+.nav-link.active {
+  color: #4caf50;
 }
 
 /* Task/Earn Section Styling */
@@ -98,26 +104,35 @@ body, html {
   gap: 20px;
   width: 100%;
   max-width: 500px;
+  margin: 0 auto;
 }
 
 .question-card {
   background: white;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.question-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .question-text {
   font-size: 18px;
   margin-bottom: 10px;
   font-weight: bold;
+  color: #34495e;
 }
 
 .options-container {
   display: flex;
   justify-content: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .option-button {
@@ -127,11 +142,12 @@ body, html {
   border-radius: 5px;
   cursor: pointer;
   background-color: #f0f0f0;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .option-button:hover {
   background-color: #ddd;
+  transform: scale(1.05);
 }
 
 .option-button.correct {
@@ -149,6 +165,8 @@ body, html {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   gap: 5px;
+  justify-content: center;
+  margin: 20px auto;
 }
 
 .cell {
@@ -161,7 +179,7 @@ body, html {
   font-weight: bold;
   border: 2px solid #ccc;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .cell.player-x {
@@ -174,9 +192,35 @@ body, html {
 
 .cell:hover {
   background-color: #f0f0f0;
+  transform: scale(1.05);
 }
 
 .cell:disabled {
   background-color: #ddd;
   cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .question-card {
+    max-width: 90%;
+  }
+
+  .option-button {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    padding: 10px 5px;
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
 }

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import { FaHome, FaGamepad, FaCoins, FaGift } from "react-icons/fa";
 import "./App.css";
 import TicTacToe from "./TicTacToe";
@@ -35,9 +35,28 @@ function App() {
     localStorage.setItem("history", JSON.stringify(updatedHistory)); // Update localStorage
   };
 
+  // Dynamic Title Update
+  const DynamicTitle = () => {
+    const location = useLocation();
+    useEffect(() => {
+      const titles = {
+        "/": "Home - Rewards App",
+        "/earn": "Earn Rewards - Rewards App",
+        "/game": "Play Game - Rewards App",
+        "/airdrop": "Airdrop History - Rewards App",
+      };
+      document.title = titles[location.pathname] || "404 Not Found - Rewards App";
+    }, [location]);
+    return null;
+  };
+
   return (
     <Router>
       <div className="app">
+        {/* Dynamic Title */}
+        <DynamicTitle />
+
+        {/* Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -52,7 +71,11 @@ function App() {
             path="/airdrop"
             element={<Airdrop balance={airdropBalance} history={history} />}
           />
+          {/* 404 Page */}
+          <Route path="*" element={<div className="not-found">404 - Page Not Found</div>} />
         </Routes>
+
+        {/* Navbar */}
         <nav className="navbar">
           <Link to="/" className="nav-link">
             <FaHome className="icon" />
