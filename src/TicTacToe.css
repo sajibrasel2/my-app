@@ -1,21 +1,27 @@
+/* General Container */
 .content {
   text-align: center;
   margin: 20px auto;
   padding: 20px;
   max-width: 600px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   padding-bottom: 100px;
+  backdrop-filter: blur(10px); /* Background blur effect */
+  position: relative;
 }
 
+/* Title Styling */
 .section-title {
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 10px;
   color: #34495e;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* Reward Information */
 .reward-info {
   font-size: 18px;
   color: #27ae60;
@@ -24,17 +30,21 @@
   text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+/* Game Stats */
 .game-stats {
   font-size: 18px;
   color: #555;
   margin-bottom: 10px;
 }
 
+/* Cooldown Timer */
 .cooldown-timer {
   font-size: 18px;
   color: #8e44ad;
+  font-weight: bold;
 }
 
+/* Start Button */
 .start-button {
   padding: 15px 35px;
   font-size: 18px;
@@ -44,6 +54,7 @@
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .start-button:hover {
@@ -51,12 +62,40 @@
   transform: scale(1.05);
 }
 
+/* Player Name Input */
+.player-name-input {
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+  max-width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.player-name-input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Game Timer */
 .game-timer {
   font-size: 18px;
   color: #e67e22;
   margin-bottom: 20px;
 }
 
+/* Turn Indicator */
+.current-turn {
+  font-size: 18px;
+  color: #2980b9;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Game Board */
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -65,10 +104,11 @@
   max-width: 320px;
 }
 
+/* Board Cells */
 .cell {
   width: 100px;
   height: 100px;
-  background-color: #ecf0f1;
+  background-color: rgba(236, 240, 241, 0.8); /* Semi-transparent */
   border: 2px solid #ddd;
   font-size: 26px;
   font-weight: bold;
@@ -76,18 +116,46 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
   border-radius: 8px;
 }
 
+.cell:hover {
+  background-color: rgba(236, 240, 241, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .cell.player-x {
-  color: #27ae60;
+  color: #27ae60; /* Green for X */
 }
 
 .cell.player-o {
-  color: #e74c3c;
+  color: #e74c3c; /* Red for O */
 }
 
+/* Winner Message */
+.winner-message {
+  font-size: 20px;
+  color: #8e44ad;
+  font-weight: bold;
+  margin-top: 15px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+  animation: fade-in 1s ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Congratulatory Popup */
 .congrats-popup {
   position: fixed;
   top: 20px;
@@ -100,4 +168,45 @@
   font-size: 18px;
   font-weight: bold;
   z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: popup-slide-in 0.5s ease-in-out;
+}
+
+@keyframes popup-slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    max-width: 95%;
+  }
+
+  .board {
+    max-width: 280px;
+    gap: 10px;
+  }
+
+  .cell {
+    width: 90px;
+    height: 90px;
+    font-size: 22px;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .reward-info,
+  .game-timer,
+  .game-stats {
+    font-size: 16px;
+  }
 }

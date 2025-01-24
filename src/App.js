@@ -9,13 +9,11 @@ import Home from "./Home";
 
 function App() {
   const [airdropBalance, setAirdropBalance] = useState(() => {
-    // LocalStorage থেকে ব্যালেন্স রিট্রিভ করা
     const storedBalance = localStorage.getItem("airdropBalance");
     return storedBalance ? JSON.parse(storedBalance) : 0;
   });
 
   const [history, setHistory] = useState(() => {
-    // LocalStorage থেকে হিস্টরি রিট্রিভ করা
     const storedHistory = localStorage.getItem("history");
     return storedHistory ? JSON.parse(storedHistory) : [];
   });
@@ -23,7 +21,7 @@ function App() {
   const updateAirdropBalance = (points) => {
     setAirdropBalance((prev) => {
       const newBalance = prev + points;
-      localStorage.setItem("airdropBalance", JSON.stringify(newBalance)); // Update localStorage
+      localStorage.setItem("airdropBalance", JSON.stringify(newBalance));
       return newBalance;
     });
   };
@@ -32,10 +30,9 @@ function App() {
     const currentTime = new Date().toLocaleString();
     const updatedHistory = [...history, `${entry} (${currentTime})`];
     setHistory(updatedHistory);
-    localStorage.setItem("history", JSON.stringify(updatedHistory)); // Update localStorage
+    localStorage.setItem("history", JSON.stringify(updatedHistory));
   };
 
-  // Dynamic Title Update
   const DynamicTitle = () => {
     const location = useLocation();
     useEffect(() => {
@@ -50,50 +47,66 @@ function App() {
     return null;
   };
 
+  const DynamicBackground = ({ children }) => {
+    const location = useLocation();
+    const getBackgroundClass = () => {
+      switch (location.pathname) {
+        case "/":
+          return "home-background";
+        case "/earn":
+          return "earn-background";
+        case "/game":
+          return "game-background";
+        case "/airdrop":
+          return "airdrop-background";
+        default:
+          return "default-background";
+      }
+    };
+
+    return <div className={getBackgroundClass()}>{children}</div>;
+  };
+
   return (
     <Router>
       <div className="app">
-        {/* Dynamic Title */}
         <DynamicTitle />
-
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/earn"
-            element={<Earn updateBalance={updateAirdropBalance} addHistory={addHistory} />}
-          />
-          <Route
-            path="/game"
-            element={<TicTacToe updateBalance={updateAirdropBalance} addHistory={addHistory} />}
-          />
-          <Route
-            path="/airdrop"
-            element={<Airdrop balance={airdropBalance} history={history} />}
-          />
-          {/* 404 Page */}
-          <Route path="*" element={<div className="not-found">404 - Page Not Found</div>} />
-        </Routes>
-
-        {/* Navbar */}
-        <nav className="navbar">
-          <Link to="/" className="nav-link">
-            <FaHome className="icon" />
-            <span>Home</span>
-          </Link>
-          <Link to="/earn" className="nav-link">
-            <FaCoins className="icon" />
-            <span>Earn</span>
-          </Link>
-          <Link to="/game" className="nav-link">
-            <FaGamepad className="icon" />
-            <span>Game</span>
-          </Link>
-          <Link to="/airdrop" className="nav-link">
-            <FaGift className="icon" />
-            <span>Airdrop</span>
-          </Link>
-        </nav>
+        <DynamicBackground>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/earn"
+              element={<Earn updateBalance={updateAirdropBalance} addHistory={addHistory} />}
+            />
+            <Route
+              path="/game"
+              element={<TicTacToe updateBalance={updateAirdropBalance} addHistory={addHistory} />}
+            />
+            <Route
+              path="/airdrop"
+              element={<Airdrop balance={airdropBalance} history={history} />}
+            />
+            <Route path="*" element={<div className="not-found">404 - Page Not Found</div>} />
+          </Routes>
+          <nav className="navbar">
+            <Link to="/" className="nav-link">
+              <FaHome className="icon" />
+              <span>Home</span>
+            </Link>
+            <Link to="/earn" className="nav-link">
+              <FaCoins className="icon" />
+              <span>Earn</span>
+            </Link>
+            <Link to="/game" className="nav-link">
+              <FaGamepad className="icon" />
+              <span>Game</span>
+            </Link>
+            <Link to="/airdrop" className="nav-link">
+              <FaGift className="icon" />
+              <span>Airdrop</span>
+            </Link>
+          </nav>
+        </DynamicBackground>
       </div>
     </Router>
   );

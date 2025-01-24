@@ -7,6 +7,8 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   const [cooldownEndTime, setCooldownEndTime] = useState(null);
   const [isGameActive, setIsGameActive] = useState(false);
   const [winner, setWinner] = useState(null);
+  const [currentTurn, setCurrentTurn] = useState("X"); // Keep track of the turn
+  const [playerName, setPlayerName] = useState("Player");
   const [gameTimeLeft, setGameTimeLeft] = useState(60); // 1-minute game timer
   const [cooldownTimeLeft, setCooldownTimeLeft] = useState(0);
   const [congratsMessage, setCongratsMessage] = useState("");
@@ -36,6 +38,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     setIsGameActive(true);
     setBoard(Array(9).fill(null));
     setWinner(null);
+    setCurrentTurn("X");
     setGameTimeLeft(60);
   };
 
@@ -52,6 +55,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     setBoard(Array(9).fill(null));
     setWinner(null);
     setGameCount((prev) => prev + 1);
+    setCurrentTurn("X");
     setGameTimeLeft(60);
     setIsGameActive(false);
   }, [gameCount]);
@@ -95,7 +99,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
     if (!isGameActive || board[index] || winner) return;
 
     const newBoard = [...board];
-    newBoard[index] = "X";
+    newBoard[index] = currentTurn;
     setBoard(newBoard);
 
     const gameWinner = checkWinner(newBoard);
@@ -103,15 +107,20 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
       setWinner(gameWinner);
       if (gameWinner === "X") {
         updateBalance(10);
-        addHistory("🎉 You won! +10 points");
-        setCongratsMessage("🎉 Congratulations! You earned 10 points!");
+        addHistory(`🎉 ${playerName} won! +10 points`);
+        setCongratsMessage(`🎉 Congratulations ${playerName}! You earned 10 points!`);
         setTimeout(() => setCongratsMessage(""), 3000);
+      } else if (gameWinner === "Draw") {
+        addHistory("It's a draw!");
       } else {
         addHistory("AI won! Better luck next time.");
       }
       resetGame();
     } else {
-      setTimeout(() => aiMove(newBoard), 500);
+      setCurrentTurn(currentTurn === "X" ? "O" : "X");
+      if (currentTurn === "X") {
+        setTimeout(() => aiMove(newBoard), 500);
+      }
     }
   };
 
@@ -131,6 +140,8 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
       setWinner(gameWinner);
       addHistory("AI won! Better luck next time.");
       resetGame();
+    } else {
+      setCurrentTurn("X");
     }
   };
 
@@ -166,14 +177,24 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
       )}
 
       {!isCooldownActive() && !isGameActive && (
-        <button className="start-button" onClick={startGame}>
-          Start Game
-        </button>
+        <>
+          <input
+            type="text"
+            placeholder="Enter your name"
+            className="player-name-input"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+          />
+          <button className="start-button" onClick={startGame}>
+            Start Game
+          </button>
+        </>
       )}
 
       {isGameActive && (
         <div>
           <p className="game-timer">Time Left: {formatTime(gameTimeLeft)}</p>
+          <p className="current-turn">Turn: {currentTurn === "X" ? playerName : "AI"}</p>
           <div className="board">
             {board.map((cell, index) => (
               <button
