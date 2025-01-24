@@ -1,0 +1,96 @@
+/* General Styles */
+.referral-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .referral-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Title */
+  .referral-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Instruction Text */
+  .referral-instruction {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Referral Link Box */
+  .referral-link-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .referral-link-input {
+    flex: 1;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    padding: 5px;
+    color: #333;
+    background: transparent;
+  }
+  
+  .referral-link-input:focus {
+    outline: none;
+  }
+  
+  /* Copy Button */
+  .copy-button {
+    background-color: #6e8efb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .copy-button:hover {
+    background-color: #5b79d7;
+  }
+  
+  /* Loading Text */
+  .loading-text {
+    font-size: 1rem;
+    color: #777;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

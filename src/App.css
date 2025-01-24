@@ -17,7 +17,7 @@ body, html {
 
 /* Page-Specific Backgrounds */
 .home-background {
-  background: linear-gradient(to bottom right, #74ebd5, #acb6e5); /* Gradient background for Home */
+  background: linear-gradient(to bottom right, #74ebd5, #acb6e5);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -25,7 +25,7 @@ body, html {
 }
 
 .earn-background {
-  background: linear-gradient(to bottom right, #ff9a9e, #fad0c4); /* Gradient background for Earn */
+  background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -33,7 +33,7 @@ body, html {
 }
 
 .game-background {
-  background: linear-gradient(to bottom right, #ffecd2, #fcb69f); /* Gradient background for Game */
+  background: linear-gradient(to bottom right, #ffecd2, #fcb69f);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -41,7 +41,7 @@ body, html {
 }
 
 .airdrop-background {
-  background: linear-gradient(to bottom right, #fbc2eb, #a6c1ee); /* Gradient background for Airdrop */
+  background: linear-gradient(to bottom right, #fbc2eb, #a6c1ee);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -49,7 +49,7 @@ body, html {
 }
 
 .not-found {
-  background: linear-gradient(to bottom right, #ff758c, #ff7eb3); /* 404 background */
+  background: linear-gradient(to bottom right, #ff758c, #ff7eb3);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -68,45 +68,11 @@ body, html {
   align-items: center;
   text-align: center;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.9); /* Semi-transparent container background */
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   width: 90%;
   max-width: 800px;
-}
-
-/* Section Titles */
-.section-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-/* Animated Header Text */
-.animated-text {
-  font-size: 28px;
-  font-weight: bold;
-  color: #f39c12;
-  animation: slide-in 2s ease-out, blink 1.5s step-start infinite;
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
 }
 
 /* Navbar Styling */
@@ -148,117 +114,58 @@ body, html {
   transform: scale(1.1);
 }
 
-/* Task/Earn Section Styling */
-.questions-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.question-card {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.question-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.question-text {
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #34495e;
-}
-
-.options-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.option-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #f0f0f0;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.option-button:hover {
-  background-color: #ddd;
-  transform: scale(1.05);
-}
-
-.option-button.correct {
-  background-color: #4caf50;
-  color: white;
-}
-
-.option-button.incorrect {
-  background-color: #f44336;
-  color: white;
-}
-
-/* Tic Tac Toe Styling */
-.board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin: 20px auto;
-  max-width: 320px;
-}
-
-.cell {
-  width: 100px;
-  height: 100px;
-  background-color: rgba(236, 240, 241, 0.8); /* Semi-transparent */
-  border: 2px solid #ddd;
-  font-size: 26px;
-  font-weight: bold;
+/* Referral Page Styles */
+.referral-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+}
+
+.referral-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  max-width: 500px;
+  text-align: center;
+}
+
+.referral-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.referral-link-box {
+  display: flex;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.referral-link-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+
+.copy-button {
+  background-color: #6e8efb;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  border-radius: 8px;
 }
 
-.cell:hover {
-  background-color: rgba(236, 240, 241, 1);
-  transform: scale(1.05);
-}
-
-.cell.player-x {
-  color: #27ae60; /* Green for X */
-}
-
-.cell.player-o {
-  color: #e74c3c; /* Red for O */
+.copy-button:hover {
+  background-color: #5b79d7;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .question-card {
-    max-width: 90%;
-  }
-
-  .option-button {
-    font-size: 14px;
-    padding: 8px 15px;
-  }
-
   .navbar {
     flex-wrap: wrap;
     padding: 10px 5px;
@@ -270,5 +177,29 @@ body, html {
 
   .nav-link {
     font-size: 12px;
+  }
+
+  .referral-card {
+    max-width: 90%;
+  }
+
+  .option-button {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .referral-card {
+    padding: 20px;
+  }
+
+  .copy-button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .referral-title {
+    font-size: 1.5rem;
   }
 }
