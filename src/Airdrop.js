@@ -3,27 +3,19 @@ import "./Airdrop.css";
 
 const Airdrop = ({ balance, history }) => {
   return (
-    <div className="airdrop-content">
-      <h1 className="section-title">Airdrop Rewards</h1>
+    <div className="airdrop-container">
+      <div className="airdrop-card">
+        <h3 className="airdrop-title">💰 Airdrop Balance</h3>
+        <p className="airdrop-balance">Your Balance: {balance} Points</p>
 
-      {/* Balance Section */}
-      <div className="balance-section">
-        <h2 className="balance-amount">{balance} Points</h2>
-        <p className="balance-text">Your total rewards balance.</p>
-      </div>
-
-      {/* History Section */}
-      <div className="history-section">
-        <h2 className="history-title">History</h2>
+        <h3 className="history-title">📜 History</h3>
         {history.length > 0 ? (
           <ul className="history-list">
             {history.map((entry, index) => (
               <li
                 key={index}
                 className={`history-item ${
-                  entry.toLowerCase().includes("earn")
-                    ? "earn-history"
-                    : "game-history"
+                  index % 2 === 0 ? "primary-item" : "secondary-item"
                 }`}
               >
                 {entry}
@@ -31,7 +23,7 @@ const Airdrop = ({ balance, history }) => {
             ))}
           </ul>
         ) : (
-          <p className="no-history-text">No history yet.</p>
+          <p className="no-history-text">No history available.</p>
         )}
       </div>
     </div>

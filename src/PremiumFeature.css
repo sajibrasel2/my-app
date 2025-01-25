@@ -1,0 +1,45 @@
+/* প্রিমিয়াম ফিচারের জন্য CSS স্টাইল */
+.premium-container {
+    text-align: center;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .premium-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #6e8efb;
+  }
+  
+  .premium-content, .premium-lock {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .premium-button {
+    background-color: #6e8efb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .premium-button:hover {
+    background-color: #576dd5;
+  }
+  
+  .premium-button.disabled {
+    background-color: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
+  }
+  

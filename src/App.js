@@ -6,6 +6,7 @@ import TicTacToe from "./TicTacToe";
 import Earn from "./Earn";
 import Airdrop from "./Airdrop";
 import Home from "./Home";
+import ReferralLink from "./ReferralLink"; // Updated import
 
 import { collection, addDoc, doc, updateDoc, increment } from "firebase/firestore";
 import db from "./firebase"; // Firestore instance
@@ -23,7 +24,6 @@ function App() {
 
   const [referralLink, setReferralLink] = useState("");
 
-  // Firestore-এ রেফারেল লিঙ্ক সংরক্ষণ এবং জেনারেট করার ফাংশন
   const generateAndSaveReferralLink = async (userId) => {
     const botUsername = "Profitbridgebot";
     const link = `https://t.me/${botUsername}?start=${userId}`;
@@ -38,13 +38,12 @@ function App() {
       });
 
       console.log("Referral link saved to Firestore!");
-      setReferralLink(link); // State-এ সেট করুন
+      setReferralLink(link); // Set the state
     } catch (error) {
       console.error("Error saving referral link: ", error);
     }
   };
 
-  // Firestore-এ এয়ারড্রপ ব্যালান্স আপডেট করার ফাংশন
   const updateAirdropBalance = async (points) => {
     setAirdropBalance((prev) => {
       const newBalance = prev + points;
@@ -63,21 +62,6 @@ function App() {
     }
   };
 
-  // Firestore-এ রেফারেল কাউন্ট আপডেট করার ফাংশন
-  const updateReferralCount = async (referrerId, referredUserId) => {
-    try {
-      const referrerDoc = doc(db, "referrals", referrerId); // Replace with actual document ID
-      await updateDoc(referrerDoc, {
-        referralCount: increment(1),
-        referredUsers: increment([referredUserId]),
-      });
-      console.log("Referral count updated in Firestore!");
-    } catch (error) {
-      console.error("Error updating referral count: ", error);
-    }
-  };
-
-  // useEffect-এ রেফারেল লিঙ্ক তৈরি এবং সংরক্ষণ
   useEffect(() => {
     const userId = 123456; // Example User ID, replace with real user ID
     generateAndSaveReferralLink(userId);
@@ -127,40 +111,6 @@ function App() {
     return <div className={getBackgroundClass()}>{children}</div>;
   };
 
-  const Referral = () => (
-    <div className="referral-container">
-      <div className="referral-card">
-        <h3 className="referral-title">🎉 Share & Earn Rewards!</h3>
-        {referralLink ? (
-          <>
-            <p className="referral-instruction">
-              Share the link below with your friends and earn rewards when they join!
-            </p>
-            <div className="referral-link-box">
-              <input
-                type="text"
-                value={referralLink}
-                readOnly
-                className="referral-link-input"
-              />
-              <button
-                className="copy-button"
-                onClick={() => {
-                  navigator.clipboard.writeText(referralLink);
-                  alert("Referral link copied!");
-                }}
-              >
-                Copy
-              </button>
-            </div>
-          </>
-        ) : (
-          <p className="loading-text">Loading referral link...</p>
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <Router>
       <div className="app">
@@ -180,7 +130,17 @@ function App() {
               path="/airdrop"
               element={<Airdrop balance={airdropBalance} history={history} />}
             />
-            <Route path="/referral" element={<Referral />} />
+            <Route
+              path="/referral"
+              element={
+                <ReferralLink
+                  userId="123456"
+                  updateAirdropBalance={(points) =>
+                    setAirdropBalance((prev) => prev + points)
+                  }
+                />
+              }
+            />
             <Route path="*" element={<div className="not-found">404 - Page Not Found</div>} />
           </Routes>
           <nav className="navbar">

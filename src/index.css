@@ -1,24 +1,38 @@
-/* Remove Slideshow styles */
-.slideshow-container {
-  display: none;
-}
+/* FontAwesome আইকন ইম্পোর্ট করার জন্য */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
-.slideshow {
-  display: none;
-}
-
+/* Slideshow এর স্টাইল সম্পূর্ণরূপে সরানো */
+.slideshow-container,
+.slideshow,
 .slideshow span {
-  display: none;
+  display: none; /* Slideshow এর সমস্ত অংশ লুকানো */
 }
 
-@keyframes slide {
-  display: none;
-}
-
-/* Retain other styles for Home page */
+/* Home page এর জন্য অ্যানিমেটেড টেক্সট স্টাইল */
 .animated-text {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 20px;
+  font-size: 24px; /* ফন্ট সাইজ ২৪ পিক্সেল */
+  font-weight: bold; /* ফন্টকে গাঢ় করা */
+  text-align: center; /* টেক্সটকে সেন্টার করা */
+  margin-top: 20px; /* উপরের দিকে ২০ পিক্সেল জায়গা */
+}
+
+/* Footer বা NavBar আইকনের জন্য স্টাইল */
+.nav-icons, .footer-icons {
+  font-size: 20px; /* আইকনের সাইজ */
+  color: #333; /* আইকনের ডিফল্ট রঙ */
+  margin: 0 10px; /* ডান ও বাম পাশে ফাঁকা */
+}
+
+.nav-icons:hover, .footer-icons:hover {
+  color: #6e8efb; /* হোভারের সময় রঙ পরিবর্তন */
+}
+
+/* যদি নতুন অ্যানিমেশন প্রয়োজন হয় */
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* প্রাথমিক অবস্থা */
+  }
+  to {
+    opacity: 1; /* চূড়ান্ত অবস্থা */
+  }
 }

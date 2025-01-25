@@ -1,34 +1,29 @@
-require('dotenv').config();
-const TelegramBot = require('node-telegram-bot-api');
+require("dotenv").config();
+const TelegramBot = require("node-telegram-bot-api");
 
-// বটের টোকেন (আপনার টোকেন দিন)
-const token = '8050384465:AAERYVEZrnBjqwi0M0CCq7M8y105kPyygR8';
+// বটের টোকেন
+const token = "YOUR_TELEGRAM_BOT_TOKEN";
 
 // নতুন বট তৈরি
 const bot = new TelegramBot(token, { polling: true });
 
 // '/start' কমান্ডের জন্য ইভেন্ট
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/start (.+)?/, async (msg, match) => {
     const chatId = msg.chat.id;
+    const refCode = match[1]; // রেফারেল কোড (যদি থাকে)
+    const userId = msg.from.id; // ব্যবহারকারীর ইউনিক ID
 
-    // প্রথম বার্তা: "Powered by Dogs"
-    bot.sendMessage(chatId, "💡 Powered by Dogs");
+    // যদি রেফারেল কোড থাকে, ডাটাবেসে আপডেট করুন
+    if (refCode) {
+        console.log(`Referred by: ${refCode}`);
+        // এখানে Firestore ডাটাবেস আপডেট করতে পারেন
+    }
 
-    // ৩ সেকেন্ড অপেক্ষা করার পরে দ্বিতীয় বার্তা পাঠানো
-    setTimeout(() => {
-        bot.sendMessage(chatId, "Welcome to Profit Chain! Click 'Continue' to enter.", {
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        { 
-                            text: "Continue", 
-                            web_app: { url: "https://profit-chain.vercel.app/" } 
-                        }
-                    ]
-                ]
-            }
-        });
-    }, 3000);
+    // নতুন রেফারেল লিংক তৈরি করুন
+    const referralLink = `https://t.me/Profitbridgebot?start=${userId}`;
+
+    // ব্যবহারকারীর জন্য বার্তা পাঠান
+    bot.sendMessage(chatId, `Welcome to Profit Chain! Your referral link: ${referralLink}`);
 });
 
 console.log("Bot is running...");
