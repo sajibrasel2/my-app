@@ -7,6 +7,9 @@ import Earn from "./Earn";
 import Airdrop from "./Airdrop";
 import Home from "./Home";
 
+import { collection, addDoc, doc, updateDoc, increment } from "firebase/firestore";
+import db from "./firebase"; // Firestore instance
+
 function App() {
   const [airdropBalance, setAirdropBalance] = useState(() => {
     const storedBalance = localStorage.getItem("airdropBalance");
@@ -20,13 +23,65 @@ function App() {
 
   const [referralLink, setReferralLink] = useState("");
 
-  const updateAirdropBalance = (points) => {
+  // Firestore-এ রেফারেল লিঙ্ক সংরক্ষণ এবং জেনারেট করার ফাংশন
+  const generateAndSaveReferralLink = async (userId) => {
+    const botUsername = "Profitbridgebot";
+    const link = `https://t.me/${botUsername}?start=${userId}`;
+
+    try {
+      await addDoc(collection(db, "referrals"), {
+        userId: userId,
+        referralLink: link,
+        referralCount: 0,
+        points: 0,
+        referredUsers: [],
+      });
+
+      console.log("Referral link saved to Firestore!");
+      setReferralLink(link); // State-এ সেট করুন
+    } catch (error) {
+      console.error("Error saving referral link: ", error);
+    }
+  };
+
+  // Firestore-এ এয়ারড্রপ ব্যালান্স আপডেট করার ফাংশন
+  const updateAirdropBalance = async (points) => {
     setAirdropBalance((prev) => {
       const newBalance = prev + points;
       localStorage.setItem("airdropBalance", JSON.stringify(newBalance));
       return newBalance;
     });
+
+    try {
+      const userDoc = doc(db, "referrals", "document_id_here"); // Replace with actual document ID
+      await updateDoc(userDoc, {
+        points: increment(points),
+      });
+      console.log("Airdrop balance updated in Firestore!");
+    } catch (error) {
+      console.error("Error updating airdrop balance: ", error);
+    }
   };
+
+  // Firestore-এ রেফারেল কাউন্ট আপডেট করার ফাংশন
+  const updateReferralCount = async (referrerId, referredUserId) => {
+    try {
+      const referrerDoc = doc(db, "referrals", referrerId); // Replace with actual document ID
+      await updateDoc(referrerDoc, {
+        referralCount: increment(1),
+        referredUsers: increment([referredUserId]),
+      });
+      console.log("Referral count updated in Firestore!");
+    } catch (error) {
+      console.error("Error updating referral count: ", error);
+    }
+  };
+
+  // useEffect-এ রেফারেল লিঙ্ক তৈরি এবং সংরক্ষণ
+  useEffect(() => {
+    const userId = 123456; // Example User ID, replace with real user ID
+    generateAndSaveReferralLink(userId);
+  }, []);
 
   const addHistory = (entry) => {
     const currentTime = new Date().toLocaleString();
@@ -34,17 +89,6 @@ function App() {
     setHistory(updatedHistory);
     localStorage.setItem("history", JSON.stringify(updatedHistory));
   };
-
-  const generateReferralLink = (userId) => {
-    const botUsername = "Profitbridgebot";
-    return `https://t.me/${botUsername}?start=${userId}`;
-  };
-
-  useEffect(() => {
-    const userId = 123456; // Example User ID, replace with real user ID
-    const link = generateReferralLink(userId);
-    setReferralLink(link);
-  }, []);
 
   const DynamicTitle = () => {
     const location = useLocation();

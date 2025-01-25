@@ -1,20 +1,48 @@
 import React, { useState, useEffect } from "react";
 import "./ReferralLink.css"; // CSS ফাইল ইম্পোর্ট
+import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore ফাংশন
+import db from "./firebase"; // Firestore instance
 
 const ReferralLink = ({ userId }) => {
-  const [referralLink, setReferralLink] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [referralLink, setReferralLink] = useState(""); // রেফারেল লিংক স্টেট
+  const [loading, setLoading] = useState(true); // লোডিং স্টেট
 
   useEffect(() => {
-    const generateReferralLink = () => {
-      // Replace this logic with your API endpoint if needed
-      const botUsername = "Profitbridgebot";
-      return `https://t.me/${botUsername}?start=${userId}`;
+    const fetchOrCreateReferralLink = async () => {
+      try {
+        // Firestore ডকুমেন্ট রেফারেন্স
+        const docRef = doc(db, "referrals", userId);
+
+        // ডেটা ফেচ করার চেষ্টা করুন
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          // যদি ডকুমেন্ট থাকে, রেফারেল লিংক সেট করুন
+          setReferralLink(docSnap.data().referralLink);
+        } else {
+          // যদি ডকুমেন্ট না থাকে, নতুন রেফারেল লিংক তৈরি করুন
+          const botUsername = "Profitbridgebot"; // আপনার বটের ইউজারনেম
+          const link = `https://t.me/${botUsername}?start=${userId}`;
+
+          // নতুন ডেটা Firestore-এ সংরক্ষণ করুন
+          await setDoc(docRef, {
+            userId: userId,
+            referralLink: link,
+            referralCount: 0,
+            points: 0,
+            referredUsers: [],
+          });
+
+          setReferralLink(link); // লিংক স্টেটে সেট করুন
+        }
+      } catch (error) {
+        console.error("Error fetching or creating referral link:", error);
+      } finally {
+        setLoading(false); // লোডিং শেষ
+      }
     };
 
-    const link = generateReferralLink();
-    setReferralLink(link);
-    setLoading(false);
+    fetchOrCreateReferralLink(); // ফাংশন কল
   }, [userId]);
 
   return (
