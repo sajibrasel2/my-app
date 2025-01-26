@@ -11,7 +11,9 @@ const Earn = ({ updateBalance, addHistory }) => {
   const [refreshTimeLeft, setRefreshTimeLeft] = useState(() => {
     const lastRefresh = localStorage.getItem("lastRefreshTime");
     const now = new Date().getTime();
-    return lastRefresh ? Math.max(6 * 60 * 60 * 1000 - (now - lastRefresh), 0) : 6 * 60 * 60 * 1000;
+    return lastRefresh
+      ? Math.max(6 * 60 * 60 * 1000 - (now - lastRefresh), 0)
+      : 6 * 60 * 60 * 1000;
   });
 
   // Fetch questions from Open Trivia API
@@ -25,7 +27,9 @@ const Earn = ({ updateBalance, addHistory }) => {
       const formattedQuestions = data.results.map((q, index) => ({
         id: index + 1,
         question: q.question,
-        options: [...q.incorrect_answers, q.correct_answer].sort(() => Math.random() - 0.5),
+        options: [...q.incorrect_answers, q.correct_answer].sort(
+          () => Math.random() - 0.5
+        ),
         correct_answer: q.correct_answer,
       }));
 
@@ -112,7 +116,10 @@ const Earn = ({ updateBalance, addHistory }) => {
                 : ""
             }`}
           >
-            <p className="task-question" dangerouslySetInnerHTML={{ __html: task.question }}></p>
+            <p
+              className="task-question"
+              dangerouslySetInnerHTML={{ __html: task.question }}
+            ></p>
             <div className="task-options">
               {task.options.map((option, idx) => (
                 <button

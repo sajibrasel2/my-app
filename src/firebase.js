@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "users-9fe88.appspot.com",
   messagingSenderId: "282767492411",
   appId: "1:282767492411:web:2eab1bae44c096f8a9e31e",
-  measurementId: "G-FRE71YKZLD"
+  measurementId: "G-FRE71YKZLD",
 };
 
 // Firebase অ্যাপ ইনিশিয়ালাইজ করুন

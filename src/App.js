@@ -24,6 +24,7 @@ function App() {
 
   const [referralLink, setReferralLink] = useState("");
 
+  // Generate and save referral link
   const generateAndSaveReferralLink = async (userId) => {
     const botUsername = "Profitbridgebot";
     const link = `https://t.me/${botUsername}?start=${userId}`;
@@ -44,6 +45,7 @@ function App() {
     }
   };
 
+  // Update Airdrop balance in Firestore
   const updateAirdropBalance = async (points) => {
     setAirdropBalance((prev) => {
       const newBalance = prev + points;
@@ -62,11 +64,13 @@ function App() {
     }
   };
 
+  // On component mount, generate referral link
   useEffect(() => {
     const userId = 123456; // Example User ID, replace with real user ID
     generateAndSaveReferralLink(userId);
   }, []);
 
+  // Add activity to history
   const addHistory = (entry) => {
     const currentTime = new Date().toLocaleString();
     const updatedHistory = [...history, `${entry} (${currentTime})`];
@@ -74,6 +78,7 @@ function App() {
     localStorage.setItem("history", JSON.stringify(updatedHistory));
   };
 
+  // Dynamic title based on route
   const DynamicTitle = () => {
     const location = useLocation();
     useEffect(() => {
@@ -89,6 +94,7 @@ function App() {
     return null;
   };
 
+  // Dynamic background based on route
   const DynamicBackground = ({ children }) => {
     const location = useLocation();
     const getBackgroundClass = () => {

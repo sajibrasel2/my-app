@@ -7,16 +7,16 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   const [cooldownEndTime, setCooldownEndTime] = useState(null);
   const [isGameActive, setIsGameActive] = useState(false);
   const [winner, setWinner] = useState(null);
-  const [currentTurn, setCurrentTurn] = useState("X"); // Keep track of the turn
+  const [currentTurn, setCurrentTurn] = useState("X");
   const [playerName, setPlayerName] = useState("Player");
-  const [gameTimeLeft, setGameTimeLeft] = useState(60); // 1-minute game timer
+  const [gameTimeLeft, setGameTimeLeft] = useState(60); // Game timer in seconds
   const [cooldownTimeLeft, setCooldownTimeLeft] = useState(0);
   const [congratsMessage, setCongratsMessage] = useState("");
 
-  const formatTime = (ms) => {
-    const minutes = Math.floor(ms / 60);
-    const seconds = ms % 60;
-    return `${minutes}m ${seconds}s`;
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}m ${secs}s`;
   };
 
   const isCooldownActive = useCallback(() => {
@@ -27,9 +27,10 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
 
   const startGame = () => {
     if (isCooldownActive()) return;
+
     if (gameCount >= 5) {
       const now = new Date().getTime();
-      const cooldown = 6 * 60 * 60 * 1000; // 6 hours cooldown
+      const cooldown = 2 * 60 * 60 * 1000; // 2 hours cooldown
       setCooldownEndTime(now + cooldown);
       setCooldownTimeLeft(cooldown / 1000);
       return;
@@ -45,7 +46,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   const resetGame = useCallback(() => {
     if (gameCount >= 5) {
       const now = new Date().getTime();
-      const cooldown = 6 * 60 * 60 * 1000; // 6 hours cooldown
+      const cooldown = 2 * 60 * 60 * 1000; // 2 hours cooldown
       setCooldownEndTime(now + cooldown);
       setCooldownTimeLeft(cooldown / 1000);
       setIsGameActive(false);
@@ -108,7 +109,7 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
       if (gameWinner === "X") {
         updateBalance(10);
         addHistory(`🎉 ${playerName} won! +10 points`);
-        setCongratsMessage(`🎉 Congratulations ${playerName}! You earned 10 points!`);
+        setCongratsMessage(`🎉 Congratulations ${playerName}! You earned 10 points! 🎉`);
         setTimeout(() => setCongratsMessage(""), 3000);
       } else if (gameWinner === "Draw") {
         addHistory("It's a draw!");
@@ -125,23 +126,25 @@ const TicTacToe = ({ updateBalance, addHistory }) => {
   };
 
   const aiMove = (board) => {
-    let move;
+    let move = -1;
     for (let i = 0; i < board.length; i++) {
       if (board[i] === null) {
         move = i;
         break;
       }
     }
-    board[move] = "O";
-    setBoard([...board]);
+    if (move !== -1) {
+      board[move] = "O";
+      setBoard([...board]);
 
-    const gameWinner = checkWinner(board);
-    if (gameWinner) {
-      setWinner(gameWinner);
-      addHistory("AI won! Better luck next time.");
-      resetGame();
-    } else {
-      setCurrentTurn("X");
+      const gameWinner = checkWinner(board);
+      if (gameWinner) {
+        setWinner(gameWinner);
+        addHistory("AI won! Better luck next time.");
+        resetGame();
+      } else {
+        setCurrentTurn("X");
+      }
     }
   };
 
