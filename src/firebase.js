@@ -1,8 +1,9 @@
-// firebaseConfig.js
+// firebase.js
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+// Firebase কনফিগারেশন অবজেক্ট
 const firebaseConfig = {
   apiKey: "AIzaSyBKFS4Ezg8gKK-IsGUrnpqz5iiiFqeIE",
   authDomain: "users-9fe88.firebaseapp.com",
@@ -16,7 +17,7 @@ const firebaseConfig = {
 // Firebase অ্যাপ ইনিশিয়ালাইজ করুন
 const app = initializeApp(firebaseConfig);
 
-// Firestore ডাটাবেস ইন্সট্যান্স তৈরি করুন
+// Firestore ডাটাবেস তৈরি করুন
 const db = getFirestore(app);
 
 export default db;
