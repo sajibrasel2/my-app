@@ -61,6 +61,19 @@ body, html {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
+/* Custom Page Background */
+.custom-background {
+  background-image: url('/background.jpg'); /* Public ফোল্ডারের ইমেজ রেফার করার সঠিক পদ্ধতি */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  animation: fadeIn 1.5s ease-in-out; /* Smooth fade-in animation */
+}
+
 /* Content Container */
 .content {
   flex: 1;
@@ -231,5 +244,15 @@ body, html {
   .button {
     padding: 8px 12px;
     font-size: 0.8rem;
+  }
+}
+
+/* Animation for fade-in effect */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

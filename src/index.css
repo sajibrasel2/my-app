@@ -1,30 +1,27 @@
 /* FontAwesome আইকন ইম্পোর্ট করার জন্য */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
-/* Slideshow এর স্টাইল সম্পূর্ণরূপে সরানো */
-.slideshow-container,
-.slideshow,
-.slideshow span {
-  display: none; /* Slideshow এর সমস্ত অংশ লুকানো */
-}
-
 /* Home page এর জন্য অ্যানিমেটেড টেক্সট স্টাইল */
 .animated-text {
   font-size: 24px; /* ফন্ট সাইজ ২৪ পিক্সেল */
   font-weight: bold; /* ফন্টকে গাঢ় করা */
   text-align: center; /* টেক্সটকে সেন্টার করা */
   margin-top: 20px; /* উপরের দিকে ২০ পিক্সেল জায়গা */
+  animation: fadeIn 2s ease-in-out; /* Fade-in animation */
+  color: #6e8efb; /* অ্যানিমেটেড টেক্সটের রঙ */
 }
 
-/* Footer বা NavBar আইকনের জন্য স্টাইল */
+/* NavBar এবং Footer আইকনের জন্য স্টাইল */
 .nav-icons, .footer-icons {
   font-size: 20px; /* আইকনের সাইজ */
   color: #333; /* আইকনের ডিফল্ট রঙ */
   margin: 0 10px; /* ডান ও বাম পাশে ফাঁকা */
+  transition: color 0.3s ease, transform 0.3s ease; /* হোভার ট্রানজিশন */
 }
 
 .nav-icons:hover, .footer-icons:hover {
   color: #6e8efb; /* হোভারের সময় রঙ পরিবর্তন */
+  transform: scale(1.2); /* হোভারের সময় আকার বৃদ্ধি */
 }
 
 /* যদি নতুন অ্যানিমেশন প্রয়োজন হয় */
@@ -34,5 +31,34 @@
   }
   to {
     opacity: 1; /* চূড়ান্ত অবস্থা */
+  }
+}
+
+/* Home page এর কন্টেন্টের জন্য */
+.home-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* সম্পূর্ণ স্ক্রিনের উচ্চতা */
+  background: linear-gradient(to right, #6e8efb, #a777e3); /* ব্যাকগ্রাউন্ড গ্রেডিয়েন্ট */
+  color: #fff; /* ফন্টের রঙ */
+  text-align: center; /* সেন্টার স্টাইলিং */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .animated-text {
+    font-size: 20px; /* ছোট স্ক্রিনের জন্য ফন্ট সাইজ হ্রাস */
+  }
+
+  .nav-icons, .footer-icons {
+    font-size: 18px; /* ছোট স্ক্রিনে আইকনের সাইজ সামঞ্জস্য করা */
+  }
+}
+
+@media (max-width: 480px) {
+  .animated-text {
+    font-size: 16px; /* আরও ছোট স্ক্রিনের জন্য ফন্ট সাইজ */
   }
 }

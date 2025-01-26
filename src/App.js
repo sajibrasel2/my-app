@@ -6,10 +6,17 @@ import TicTacToe from "./TicTacToe";
 import Earn from "./Earn";
 import Airdrop from "./Airdrop";
 import Home from "./Home";
-import ReferralLink from "./ReferralLink"; // Updated import
-
+import ReferralLink from "./ReferralLink";
 import { collection, addDoc, doc, updateDoc, increment } from "firebase/firestore";
-import db from "./firebase"; // Firestore instance
+import db from "./firebase";
+
+// Custom Page Component
+const CustomPage = () => (
+  <div className="custom-content">
+    <h1>Welcome to the Custom Page!</h1>
+    <p>This is a new page with custom content and background.</p>
+  </div>
+);
 
 function App() {
   const [airdropBalance, setAirdropBalance] = useState(() => {
@@ -39,7 +46,7 @@ function App() {
       });
 
       console.log("Referral link saved to Firestore!");
-      setReferralLink(link); // Set the state
+      setReferralLink(link);
     } catch (error) {
       console.error("Error saving referral link: ", error);
     }
@@ -54,7 +61,7 @@ function App() {
     });
 
     try {
-      const userDoc = doc(db, "referrals", "document_id_here"); // Replace with actual document ID
+      const userDoc = doc(db, "referrals", "document_id_here"); // Replace with the actual document ID
       await updateDoc(userDoc, {
         points: increment(points),
       });
@@ -66,7 +73,7 @@ function App() {
 
   // On component mount, generate referral link
   useEffect(() => {
-    const userId = 123456; // Example User ID, replace with real user ID
+    const userId = 123456; // Example user ID
     generateAndSaveReferralLink(userId);
   }, []);
 
@@ -88,6 +95,7 @@ function App() {
         "/game": "Play Game - Rewards App",
         "/airdrop": "Airdrop History - Rewards App",
         "/referral": "Referral Link - Rewards App",
+        "/custom-page": "Custom Page - Rewards App", // New Page Title
       };
       document.title = titles[location.pathname] || "404 Not Found - Rewards App";
     }, [location]);
@@ -109,6 +117,8 @@ function App() {
           return "airdrop-background";
         case "/referral":
           return "referral-background";
+        case "/custom-page": // New background class for custom page
+          return "custom-background";
         default:
           return "default-background";
       }
@@ -147,6 +157,7 @@ function App() {
                 />
               }
             />
+            <Route path="/custom-page" element={<CustomPage />} /> {/* Custom Page */}
             <Route path="*" element={<div className="not-found">404 - Page Not Found</div>} />
           </Routes>
           <nav className="navbar">
@@ -169,6 +180,10 @@ function App() {
             <Link to="/referral" className="nav-link">
               <FaLink className="icon" />
               <span>Referral</span>
+            </Link>
+            <Link to="/custom-page" className="nav-link">
+              <FaLink className="icon" />
+              <span>Custom</span>
             </Link>
           </nav>
         </DynamicBackground>
